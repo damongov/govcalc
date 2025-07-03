@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Book, Calculator, Menu, X, Users } from 'lucide-react';
+import { Book, Calculator, Menu, X, Users, Heart } from 'lucide-react';
 
 const BookIcon = ({ type }) => {
   const getBookStyle = (type) => {
@@ -70,7 +70,7 @@ const BookIcon = ({ type }) => {
 };
 
 const DominanceCalculator = ({ onNavigate }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sections, setSections] = useState({
     section5000: {
       title: "5,000 Section",
@@ -327,6 +327,13 @@ const DominanceCalculator = ({ onNavigate }) => {
               <Users size={20} />
               {sidebarOpen && <span>Conclave Calculator</span>}
             </button>
+            <button 
+              onClick={() => onNavigate && onNavigate('attraction')} 
+              className="w-full flex items-center gap-3 p-3 rounded-lg text-red-200 hover:bg-red-900/30 transition-colors text-left"
+            >
+              <Heart size={20} />
+              {sidebarOpen && <span>Attraction Calculator</span>}
+            </button>
           </nav>
         </div>
       </div>
@@ -581,229 +588,4 @@ const DominanceCalculator = ({ onNavigate }) => {
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-red-100 text-xs">Str/Int Books %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.cesare_books} onChange={(e) => updateAura('cesare_books', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Max</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">Str/Spr Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.max_talent} onChange={(e) => updateAura('max_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">Str/Spr Books %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.max_books} onChange={(e) => updateAura('max_books', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Erzsebet</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All/Int Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.erzsebet_talent} onChange={(e) => updateAura('erzsebet_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All/Int Books %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.erzsebet_books} onChange={(e) => updateAura('erzsebet_books', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Ivan</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All/Spr Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.ivan_talent} onChange={(e) => updateAura('ivan_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All/Spr Books %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.ivan_books} onChange={(e) => updateAura('ivan_books', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Maria</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.maria_talent} onChange={(e) => updateAura('maria_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All Books %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.maria_books} onChange={(e) => updateAura('maria_books', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Misc & VIP Wardens */}
-                <div className="bg-black/40 backdrop-blur-lg rounded-xl p-4 border border-red-900/50">
-                  <h3 className="text-lg font-bold text-yellow-400 mb-3">Misc & VIP Wardens</h3>
-                  <div className="space-y-3">
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Dracula</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.dracula_talent} onChange={(e) => updateAura('dracula_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All Books %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.dracula_books} onChange={(e) => updateAura('dracula_books', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Nyx</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.nyx_talent} onChange={(e) => updateAura('nyx_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All Books %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.nyx_books} onChange={(e) => updateAura('nyx_books', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Frederick</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">Allure Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.frederick_talent} onChange={(e) => updateAura('frederick_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">Allure Books %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.frederick_books} onChange={(e) => updateAura('frederick_books', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Victor</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">Strength Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.victor_talent} onChange={(e) => updateAura('victor_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Tomas</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">Str/Int Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.tomas_talent} onChange={(e) => updateAura('tomas_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Cleo</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All/Spr Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.cleo_talent} onChange={(e) => updateAura('cleo_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Aurelia</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">Str/Spr Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.aurelia_talent} onChange={(e) => updateAura('aurelia_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">William</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All/Int Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.william_talent} onChange={(e) => updateAura('william_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Poe</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.poe_talent} onChange={(e) => updateAura('poe_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All Books %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.poe_books} onChange={(e) => updateAura('poe_books', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Damian</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.damian_talent} onChange={(e) => updateAura('damian_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All Books %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.damian_books} onChange={(e) => updateAura('damian_books', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Vance</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.vance_talent} onChange={(e) => updateAura('vance_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All Books %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.vance_books} onChange={(e) => updateAura('vance_books', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-black/30 rounded-lg p-3 border border-red-900/30">
-                      <h4 className="text-red-100 font-semibold mb-2">Diana</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All Talent %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.diana_talent} onChange={(e) => updateAura('diana_talent', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-red-100 text-xs">All Books %:</span>
-                          <input type="number" min="0" step="1" value={wardenAuras.diana_books} onChange={(e) => updateAura('diana_books', e.target.value)} className="w-14 bg-black/50 text-red-100 text-center text-xs px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none" placeholder="0" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default DominanceCalculator;
+                          <input
