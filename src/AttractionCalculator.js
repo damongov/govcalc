@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, Flower, Sparkles } from 'lucide-react';
+import { Heart, Flower, Sparkles, Save, Upload, Copy, Check } from 'lucide-react';
 
 const AttractionCalculator = ({ onNavigate }) => {
   const [guaranteedItems, setGuaranteedItems] = useState({
@@ -25,6 +25,13 @@ const AttractionCalculator = ({ onNavigate }) => {
   const [randomTotalMin, setRandomTotalMin] = useState(0);
   const [randomTotalMax, setRandomTotalMax] = useState(0);
   const [sideGameTotal, setSideGameTotal] = useState(0);
+
+  // Save/Load state
+  const [showSaveLoad, setShowSaveLoad] = useState(false);
+  const [saveCode, setSaveCode] = useState('');
+  const [loadCode, setLoadCode] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [loadError, setLoadError] = useState('');
 
   // Calculate guaranteed total
   useEffect(() => {
@@ -79,6 +86,75 @@ const AttractionCalculator = ({ onNavigate }) => {
     }));
   };
 
+  // Save/Load Functions
+  const generateSaveCode = () => {
+    const saveData = {
+      v: 1, // version number for future compatibility
+      g: guaranteedItems,
+      r: randomItems,
+      s: sideGameItems
+    };
+    
+    try {
+      const jsonString = JSON.stringify(saveData);
+      const compressed = btoa(jsonString);
+      setSaveCode(compressed);
+      setCopied(false);
+    } catch (error) {
+      console.error('Error generating save code:', error);
+    }
+  };
+
+  const loadFromCode = () => {
+    setLoadError('');
+    
+    if (!loadCode.trim()) {
+      setLoadError('Please enter a save code');
+      return;
+    }
+
+    try {
+      const jsonString = atob(loadCode.trim());
+      const saveData = JSON.parse(jsonString);
+      
+      // Validate version
+      if (saveData.v !== 1) {
+        setLoadError('Invalid save code version');
+        return;
+      }
+
+      // Load guaranteed items
+      if (saveData.g) {
+        setGuaranteedItems(saveData.g);
+      }
+
+      // Load random items
+      if (saveData.r) {
+        setRandomItems(saveData.r);
+      }
+
+      // Load side game items
+      if (saveData.s) {
+        setSideGameItems(saveData.s);
+      }
+
+      // Clear the load code and close the save/load panel
+      setLoadCode('');
+      setShowSaveLoad(false);
+      
+    } catch (error) {
+      setLoadError('Invalid save code. Please check and try again.');
+      console.error('Error loading save code:', error);
+    }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(saveCode).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
   const totalMin = guaranteedTotal + randomTotalMin + sideGameTotal;
   const totalMax = guaranteedTotal + randomTotalMax + sideGameTotal;
 
@@ -93,6 +169,81 @@ const AttractionCalculator = ({ onNavigate }) => {
             </h1>
             <p className="text-red-100 text-sm sm:text-base">Calculate your attraction points from bouquets and charm items</p>
           </div>
+
+          {/* Save/Load Button */}
+          <div className="text-center mb-4">
+            <button
+              onClick={() => setShowSaveLoad(!showSaveLoad)}
+              className="bg-red-900/30 hover:bg-red-900/50 text-red-200 px-4 py-2 rounded-lg border border-red-700/50 transition-colors flex items-center gap-2 mx-auto"
+            >
+              <Save size={18} />
+              Save/Load Data
+            </button>
+          </div>
+
+          {/* Save/Load Panel */}
+          {showSaveLoad && (
+            <div className="bg-black/40 backdrop-blur-lg rounded-xl p-4 border border-red-900/50 mb-6 max-w-2xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Save Section */}
+                <div className="bg-black/30 rounded-lg p-4 border border-red-900/30">
+                  <h3 className="text-red-100 font-semibold mb-3 flex items-center gap-2">
+                    <Save size={16} />
+                    Save Current Data
+                  </h3>
+                  <button
+                    onClick={generateSaveCode}
+                    className="w-full bg-red-800/50 hover:bg-red-800/70 text-red-100 px-3 py-2 rounded mb-3 transition-colors"
+                  >
+                    Generate Save Code
+                  </button>
+                  {saveCode && (
+                    <div>
+                      <div className="relative">
+                        <textarea
+                          readOnly
+                          value={saveCode}
+                          className="w-full bg-black/50 text-red-100 text-xs font-mono p-2 rounded border border-red-800/50 h-24 resize-none"
+                        />
+                        <button
+                          onClick={copyToClipboard}
+                          className="absolute top-2 right-2 bg-red-800/70 hover:bg-red-800/90 text-red-100 p-1 rounded transition-colors"
+                        >
+                          {copied ? <Check size={14} /> : <Copy size={14} />}
+                        </button>
+                      </div>
+                      {copied && (
+                        <p className="text-green-400 text-xs mt-1">Copied to clipboard!</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Load Section */}
+                <div className="bg-black/30 rounded-lg p-4 border border-red-900/30">
+                  <h3 className="text-red-100 font-semibold mb-3 flex items-center gap-2">
+                    <Upload size={16} />
+                    Load Saved Data
+                  </h3>
+                  <textarea
+                    value={loadCode}
+                    onChange={(e) => setLoadCode(e.target.value)}
+                    placeholder="Paste your save code here..."
+                    className="w-full bg-black/50 text-red-100 text-xs font-mono p-2 rounded border border-red-800/50 focus:border-red-600 focus:outline-none h-24 resize-none mb-3"
+                  />
+                  <button
+                    onClick={loadFromCode}
+                    className="w-full bg-green-800/50 hover:bg-green-800/70 text-green-100 px-3 py-2 rounded transition-colors"
+                  >
+                    Load Data
+                  </button>
+                  {loadError && (
+                    <p className="text-red-400 text-xs mt-2">{loadError}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="bg-black/40 backdrop-blur-lg rounded-2xl p-4 sm:p-8 border border-red-900/50 shadow-2xl">
             {/* Total Results Box */}
