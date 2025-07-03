@@ -1,10 +1,9 @@
-// App.js - Fixed with IntimacyCalculator properly included
+// App.js - Fixed with proper height handling
 import React, { useState } from 'react';
-import { Menu, X, Sword, Table, Flower, Gift } from 'lucide-react';
+import { Menu, X, Sword, Armchair, Flower, Gift } from 'lucide-react';
 import DominanceCalculator from './DominanceCalculator';
 import ConclaveCalculator from './ConclaveCalculator';
 import AttractionCalculator from './AttractionCalculator';
-import IntimacyCalculator from './IntimacyCalculator'; // ADD THIS LINE
 
 const App = () => {
   const [currentView, setCurrentView] = useState('dominance');
@@ -50,7 +49,7 @@ const App = () => {
                 currentView === 'conclave' ? 'bg-red-900/30 hover:bg-red-900/50' : 'hover:bg-red-900/30'
               }`}
             >
-              <Table size={20} />
+              <Armchair size={20} />
               {sidebarOpen && <span>Conclave Calculator</span>}
             </button>
             <button 
@@ -96,7 +95,6 @@ const App = () => {
         {currentView === 'dominance' && <DominanceCalculator />}
         {currentView === 'conclave' && <ConclaveCalculator />}
         {currentView === 'attraction' && <AttractionCalculator />}
-        {currentView === 'intimacy' && <IntimacyCalculator />} {/* ADD THIS LINE */}
       </div>
     </div>
   );
