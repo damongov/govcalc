@@ -1,0 +1,275 @@
+import React, { useState, useEffect } from 'react';
+import { Heart, Flower, Sparkles } from 'lucide-react';
+
+const AttractionCalculator = () => {
+  const [guaranteedItems, setGuaranteedItems] = useState({
+    indigo: 0,
+    azure: 0,
+    rose: 0
+  });
+
+  const [randomItems, setRandomItems] = useState({
+    charmBox: 0,
+    charmBottle: 0,
+    charmPhial: 0
+  });
+
+  const [guaranteedTotal, setGuaranteedTotal] = useState(0);
+  const [randomTotalMin, setRandomTotalMin] = useState(0);
+  const [randomTotalMax, setRandomTotalMax] = useState(0);
+
+  // Calculate guaranteed total
+  useEffect(() => {
+    const total = (guaranteedItems.indigo * 5) + 
+                  (guaranteedItems.azure * 2) + 
+                  (guaranteedItems.rose * 1);
+    setGuaranteedTotal(total);
+  }, [guaranteedItems]);
+
+  // Calculate random totals (min and max)
+  useEffect(() => {
+    const minTotal = (randomItems.charmBox * 4) + 
+                     (randomItems.charmBottle * 5) + 
+                     (randomItems.charmPhial * 1);
+    const maxTotal = (randomItems.charmBox * 50) + 
+                     (randomItems.charmBottle * 8) + 
+                     (randomItems.charmPhial * 4);
+    setRandomTotalMin(minTotal);
+    setRandomTotalMax(maxTotal);
+  }, [randomItems]);
+
+  const updateGuaranteedItem = (item, value) => {
+    const numValue = parseInt(value) || 0;
+    setGuaranteedItems(prev => ({
+      ...prev,
+      [item]: Math.max(0, numValue)
+    }));
+  };
+
+  const updateRandomItem = (item, value) => {
+    const numValue = parseInt(value) || 0;
+    setRandomItems(prev => ({
+      ...prev,
+      [item]: Math.max(0, numValue)
+    }));
+  };
+
+  const totalMin = guaranteedTotal + randomTotalMin;
+  const totalMax = guaranteedTotal + randomTotalMax;
+
+  return (
+    <div className="min-h-screen p-3 sm:p-6">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-4xl font-bold text-red-200 mb-2 flex items-center justify-center gap-3">
+            <Heart className="text-red-400" />
+            Attraction Calculator
+          </h1>
+          <p className="text-red-100 text-sm sm:text-base">Calculate your attraction points from bouquets and charm items</p>
+        </div>
+
+        <div className="bg-black/40 backdrop-blur-lg rounded-2xl p-4 sm:p-8 border border-red-900/50 shadow-2xl">
+          {/* Total Results Box */}
+          <div className="bg-gradient-to-r from-red-900/30 to-black/30 border border-red-700/50 rounded-xl p-6 mb-8 text-center">
+            <h2 className="text-lg text-red-200 mb-3">Total Attraction Range</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <div className="text-sm text-red-300 mb-1">Minimum</div>
+                <div className="text-3xl sm:text-4xl font-bold text-red-100">
+                  {totalMin.toLocaleString()}
+                </div>
+              </div>
+              <div className="flex items-center justify-center">
+                <Heart className="text-red-400 animate-pulse" size={32} />
+              </div>
+              <div>
+                <div className="text-sm text-red-300 mb-1">Maximum</div>
+                <div className="text-3xl sm:text-4xl font-bold text-red-100">
+                  {totalMax.toLocaleString()}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Guaranteed Attraction Section */}
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <Flower className="text-red-300" size={24} />
+              <h2 className="text-xl font-bold text-red-100">Guaranteed Attraction</h2>
+            </div>
+            
+            <div className="bg-black/30 rounded-xl p-4 border border-red-900/30">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                {/* Indigo Bouquet */}
+                <div className="bg-black/40 rounded-lg p-4 border border-purple-700/50">
+                  <div className="text-center mb-3">
+                    <h3 className="text-purple-300 font-semibold mb-1">Indigo Bouquet</h3>
+                    <div className="text-sm text-purple-200">5 points each</div>
+                  </div>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={guaranteedItems.indigo}
+                    onChange={(e) => updateGuaranteedItem('indigo', e.target.value)}
+                    className="w-full bg-black/50 text-purple-100 text-center text-xl font-bold px-3 py-2 rounded-lg border border-purple-600/50 focus:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-400/50"
+                    placeholder="0"
+                  />
+                  <div className="text-center mt-2 text-sm text-purple-200">
+                    = {(guaranteedItems.indigo * 5).toLocaleString()} points
+                  </div>
+                </div>
+
+                {/* Azure Bouquet */}
+                <div className="bg-black/40 rounded-lg p-4 border border-blue-700/50">
+                  <div className="text-center mb-3">
+                    <h3 className="text-blue-300 font-semibold mb-1">Azure Bouquet</h3>
+                    <div className="text-sm text-blue-200">2 points each</div>
+                  </div>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={guaranteedItems.azure}
+                    onChange={(e) => updateGuaranteedItem('azure', e.target.value)}
+                    className="w-full bg-black/50 text-blue-100 text-center text-xl font-bold px-3 py-2 rounded-lg border border-blue-600/50 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/50"
+                    placeholder="0"
+                  />
+                  <div className="text-center mt-2 text-sm text-blue-200">
+                    = {(guaranteedItems.azure * 2).toLocaleString()} points
+                  </div>
+                </div>
+
+                {/* Rose Bouquet */}
+                <div className="bg-black/40 rounded-lg p-4 border border-pink-700/50">
+                  <div className="text-center mb-3">
+                    <h3 className="text-pink-300 font-semibold mb-1">Rose Bouquet</h3>
+                    <div className="text-sm text-pink-200">1 point each</div>
+                  </div>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={guaranteedItems.rose}
+                    onChange={(e) => updateGuaranteedItem('rose', e.target.value)}
+                    className="w-full bg-black/50 text-pink-100 text-center text-xl font-bold px-3 py-2 rounded-lg border border-pink-600/50 focus:border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400/50"
+                    placeholder="0"
+                  />
+                  <div className="text-center mt-2 text-sm text-pink-200">
+                    = {(guaranteedItems.rose * 1).toLocaleString()} points
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-red-900/20 to-black/20 rounded-lg p-3 text-center">
+                <div className="text-sm text-red-300">Guaranteed Total</div>
+                <div className="text-2xl font-bold text-red-100">{guaranteedTotal.toLocaleString()} points</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Random Attraction Section */}
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <Sparkles className="text-red-300" size={24} />
+              <h2 className="text-xl font-bold text-red-100">Random Attraction</h2>
+            </div>
+            
+            <div className="bg-black/30 rounded-xl p-4 border border-red-900/30">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                {/* Charm Box */}
+                <div className="bg-black/40 rounded-lg p-4 border border-yellow-700/50">
+                  <div className="text-center mb-3">
+                    <h3 className="text-yellow-300 font-semibold mb-1">Charm Box</h3>
+                    <div className="text-sm text-yellow-200">4-50 points each</div>
+                  </div>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={randomItems.charmBox}
+                    onChange={(e) => updateRandomItem('charmBox', e.target.value)}
+                    className="w-full bg-black/50 text-yellow-100 text-center text-xl font-bold px-3 py-2 rounded-lg border border-yellow-600/50 focus:border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/50"
+                    placeholder="0"
+                  />
+                  <div className="text-center mt-2 text-xs text-yellow-200">
+                    {randomItems.charmBox > 0 && (
+                      <span>{(randomItems.charmBox * 4).toLocaleString()} - {(randomItems.charmBox * 50).toLocaleString()} pts</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Charm Bottle */}
+                <div className="bg-black/40 rounded-lg p-4 border border-green-700/50">
+                  <div className="text-center mb-3">
+                    <h3 className="text-green-300 font-semibold mb-1">Charm Bottle</h3>
+                    <div className="text-sm text-green-200">5-8 points each</div>
+                  </div>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={randomItems.charmBottle}
+                    onChange={(e) => updateRandomItem('charmBottle', e.target.value)}
+                    className="w-full bg-black/50 text-green-100 text-center text-xl font-bold px-3 py-2 rounded-lg border border-green-600/50 focus:border-green-400 focus:outline-none focus:ring-2 focus:ring-green-400/50"
+                    placeholder="0"
+                  />
+                  <div className="text-center mt-2 text-xs text-green-200">
+                    {randomItems.charmBottle > 0 && (
+                      <span>{(randomItems.charmBottle * 5).toLocaleString()} - {(randomItems.charmBottle * 8).toLocaleString()} pts</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Charm Phial */}
+                <div className="bg-black/40 rounded-lg p-4 border border-orange-700/50">
+                  <div className="text-center mb-3">
+                    <h3 className="text-orange-300 font-semibold mb-1">Charm Phial</h3>
+                    <div className="text-sm text-orange-200">1-4 points each</div>
+                  </div>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={randomItems.charmPhial}
+                    onChange={(e) => updateRandomItem('charmPhial', e.target.value)}
+                    className="w-full bg-black/50 text-orange-100 text-center text-xl font-bold px-3 py-2 rounded-lg border border-orange-600/50 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-400/50"
+                    placeholder="0"
+                  />
+                  <div className="text-center mt-2 text-xs text-orange-200">
+                    {randomItems.charmPhial > 0 && (
+                      <span>{(randomItems.charmPhial * 1).toLocaleString()} - {(randomItems.charmPhial * 4).toLocaleString()} pts</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-red-900/20 to-black/20 rounded-lg p-3 text-center">
+                <div className="text-sm text-red-300">Estimated Total</div>
+                <div className="text-2xl font-bold text-red-100">
+                  {randomTotalMin.toLocaleString()} - {randomTotalMax.toLocaleString()} points
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Summary Box */}
+          {(guaranteedTotal > 0 || randomTotalMin > 0) && (
+            <div className="mt-6 bg-black/30 rounded-lg p-4 border border-red-900/30 text-sm">
+              <h3 className="text-red-100 font-semibold mb-2">Summary:</h3>
+              <div className="text-red-200 space-y-1">
+                <p>Guaranteed Attraction: {guaranteedTotal.toLocaleString()} points</p>
+                <p>Random Attraction: {randomTotalMin.toLocaleString()} - {randomTotalMax.toLocaleString()} points</p>
+                <p className="font-semibold text-red-100 pt-2">
+                  Total Range: {totalMin.toLocaleString()} - {totalMax.toLocaleString()} points
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AttractionCalculator;
