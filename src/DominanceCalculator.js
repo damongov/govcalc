@@ -303,7 +303,7 @@ const DominanceCalculator = ({ onNavigate }) => {
       <div className={`${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 bg-black/60 backdrop-blur-lg border-r border-red-900/50`}>
         <div className="p-4">
           <div className="flex items-center justify-between mb-8">
-            <h2 className={`text-red-200 font-bold text-xl ${sidebarOpen ? 'block' : 'hidden'}`}>govcalc.io</h2>
+            <h2 className={`text-red-200 font-bold text-xl ${sidebarOpen ? 'block' : 'hidden'}`}>GoV Tools</h2>
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className="text-red-400 hover:text-red-300 transition-colors"
