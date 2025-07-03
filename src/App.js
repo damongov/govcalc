@@ -1,9 +1,10 @@
-// App.js - Fixed with proper height handling
+// App.js - Fixed with IntimacyCalculator properly included
 import React, { useState } from 'react';
 import { Menu, X, Sword, Table, Flower, Gift } from 'lucide-react';
 import DominanceCalculator from './DominanceCalculator';
 import ConclaveCalculator from './ConclaveCalculator';
 import AttractionCalculator from './AttractionCalculator';
+import IntimacyCalculator from './IntimacyCalculator'; // ADD THIS LINE
 
 const App = () => {
   const [currentView, setCurrentView] = useState('dominance');
@@ -95,6 +96,7 @@ const App = () => {
         {currentView === 'dominance' && <DominanceCalculator />}
         {currentView === 'conclave' && <ConclaveCalculator />}
         {currentView === 'attraction' && <AttractionCalculator />}
+        {currentView === 'intimacy' && <IntimacyCalculator />} {/* ADD THIS LINE */}
       </div>
     </div>
   );
