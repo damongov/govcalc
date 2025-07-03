@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Trophy, Clock, Crown, Star, AlertCircle, Menu, X, Calculator, Users } from 'lucide-react';
 
 const ConclaveCalculator = ({ onNavigate }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [hours, setHours] = useState('');
   const [minutes, setMinutes] = useState('');
   const [seconds, setSeconds] = useState('');
