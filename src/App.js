@@ -389,7 +389,10 @@ const DominanceCalculator = () => {
   };
 
   return (
-    <div className="min-h-screen p-6" style={{background: 'linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%)'}}>
+    <div 
+      className="min-h-screen p-6"
+      style={{background: 'linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%)'}}
+    >
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-white mb-2 flex items-center justify-center gap-3">
@@ -440,7 +443,10 @@ const DominanceCalculator = () => {
           </div>
 
           <div className="text-center">
-            <div className="border border-yellow-400/30 rounded-xl p-6" style={{background: 'linear-gradient(90deg, rgba(251, 191, 36, 0.2) 0%, rgba(251, 146, 60, 0.2) 100%)'}}>
+            <div 
+              className="border border-yellow-400/30 rounded-xl p-6"
+              style={{background: 'linear-gradient(90deg, rgba(251, 191, 36, 0.2) 0%, rgba(251, 146, 60, 0.2) 100%)'}}
+            >
               <h2 className="text-3xl font-bold text-yellow-300 mb-2">Total Dominance</h2>
               <div className="text-6xl font-bold text-white mb-4">
                 {totalDominance.toLocaleString()}
@@ -461,7 +467,7 @@ const DominanceCalculator = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {Object.entries(sections).map(([sectionKey, section]) => (
             <div key={sectionKey} className="bg-white/10 backdrop-blur-lg rounded-xl p-3 border border-white/20 shadow-2xl">
               <div className="text-center mb-3">
