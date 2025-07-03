@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Utensils, Clock, Crown, Star, AlertCircle } from 'lucide-react';
+import { Armchair, Clock, Crown, Star, AlertCircle } from 'lucide-react';
 
 const ConclaveCalculator = ({ onNavigate }) => {
   const [hours, setHours] = useState('');
@@ -101,30 +101,30 @@ const ConclaveCalculator = ({ onNavigate }) => {
   }, [hours, minutes, seconds, selectedTable, selectedTitle, selectedBond]);
 
   return (
-    <div className="flex-1 overflow-y-auto min-h-full">
-      <div className="p-3 sm:p-6 min-h-full">
+    <div className="flex-1 flex flex-col overflow-y-auto">
+      <div className="flex-1 p-3 sm:p-6">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-6 sm:mb-8">
-            <h1 className="text-2xl sm:text-4xl font-bold text-green-200 mb-2 flex items-center justify-center gap-3">
-              <Utensils className="text-green-400" />
+            <h1 className="text-2xl sm:text-4xl font-bold text-red-200 mb-2 flex items-center justify-center gap-3">
+              <Armchair className="text-red-400" />
               Conclave Table Calculator
             </h1>
-            <p className="text-green-100 text-sm sm:text-base">Calculate conclave table points based on duration, type, and bonuses</p>
+            <p className="text-red-100 text-sm sm:text-base">Calculate conclave table points based on duration, type, and bonuses</p>
           </div>
 
-          <div className="bg-black/40 backdrop-blur-lg rounded-2xl p-4 sm:p-8 border border-green-900/50 shadow-2xl">
+          <div className="bg-black/40 backdrop-blur-lg rounded-2xl p-4 sm:p-8 border border-red-900/50 shadow-2xl">
             {/* Results Box */}
-            <div className="bg-gradient-to-r from-green-900/30 to-black/30 border border-green-700/50 rounded-xl p-6 mb-8 text-center">
-              <h2 className="text-lg text-green-200 mb-2">If you sit at this conclave table, you will get ...</h2>
-              <div className="text-4xl sm:text-6xl font-bold text-green-100">
+            <div className="bg-gradient-to-r from-red-900/30 to-black/30 border border-red-700/50 rounded-xl p-6 mb-8 text-center">
+              <h2 className="text-lg text-red-200 mb-2">If you sit at this conclave table, you will get ...</h2>
+              <div className="text-4xl sm:text-6xl font-bold text-red-100">
                 {totalPoints.toLocaleString()}
               </div>
-              <div className="text-green-200 mt-2">CONCLAVE POINTS</div>
+              <div className="text-red-200 mt-2">CONCLAVE POINTS</div>
             </div>
 
             {/* Time Input */}
             <div className="mb-6">
-              <label className="block text-green-100 text-lg font-semibold mb-3 flex items-center gap-2">
+              <label className="block text-red-100 text-lg font-semibold mb-3 flex items-center gap-2">
                 <Clock size={20} />
                 How much time is left on the conclave?
               </label>
@@ -136,10 +136,10 @@ const ConclaveCalculator = ({ onNavigate }) => {
                     value={hours}
                     onChange={handleHoursChange}
                     placeholder="0"
-                    className="w-20 bg-black/50 text-green-100 text-center text-2xl font-mono px-3 py-3 rounded-lg border border-green-800/50 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/50"
+                    className="w-20 bg-black/50 text-red-100 text-center text-2xl font-mono px-3 py-3 rounded-lg border border-red-800/50 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/50"
                     maxLength="1"
                   />
-                  <p className="text-xs text-green-300 mt-1">hours</p>
+                  <p className="text-xs text-red-300 mt-1">hours</p>
                 </div>
                 
                 <div className="text-center">
@@ -148,10 +148,10 @@ const ConclaveCalculator = ({ onNavigate }) => {
                     value={minutes}
                     onChange={handleMinutesChange}
                     placeholder="0"
-                    className="w-20 bg-black/50 text-green-100 text-center text-2xl font-mono px-3 py-3 rounded-lg border border-green-800/50 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/50"
+                    className="w-20 bg-black/50 text-red-100 text-center text-2xl font-mono px-3 py-3 rounded-lg border border-red-800/50 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/50"
                     maxLength="2"
                   />
-                  <p className="text-xs text-green-300 mt-1">minutes</p>
+                  <p className="text-xs text-red-300 mt-1">minutes</p>
                 </div>
                 
                 <div className="text-center">
@@ -160,10 +160,10 @@ const ConclaveCalculator = ({ onNavigate }) => {
                     value={seconds}
                     onChange={handleSecondsChange}
                     placeholder="0"
-                    className="w-20 bg-black/50 text-green-100 text-center text-2xl font-mono px-3 py-3 rounded-lg border border-green-800/50 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-600/50"
+                    className="w-20 bg-black/50 text-red-100 text-center text-2xl font-mono px-3 py-3 rounded-lg border border-red-800/50 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/50"
                     maxLength="2"
                   />
-                  <p className="text-xs text-green-300 mt-1">seconds</p>
+                  <p className="text-xs text-red-300 mt-1">seconds</p>
                 </div>
               </div>
               
@@ -177,7 +177,7 @@ const ConclaveCalculator = ({ onNavigate }) => {
 
             {/* Table Selection */}
             <div className="mb-6">
-              <label className="block text-green-100 text-lg font-semibold mb-3">
+              <label className="block text-red-100 text-lg font-semibold mb-3">
                 What kind of table?
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -188,8 +188,8 @@ const ConclaveCalculator = ({ onNavigate }) => {
                       relative flex items-center justify-center p-4 rounded-lg cursor-pointer
                       border-2 transition-all duration-200
                       ${selectedTable === option.value.toString()
-                        ? 'bg-green-900/50 border-green-600 text-green-100'
-                        : 'bg-black/30 border-green-900/30 text-green-200 hover:bg-green-900/20'
+                        ? 'bg-red-900/50 border-red-600 text-red-100'
+                        : 'bg-black/30 border-red-900/30 text-red-200 hover:bg-red-900/20'
                       }
                     `}
                   >
@@ -209,7 +209,7 @@ const ConclaveCalculator = ({ onNavigate }) => {
 
             {/* Title Selection */}
             <div className="mb-6">
-              <label className="block text-green-100 text-lg font-semibold mb-3 flex items-center gap-2">
+              <label className="block text-red-100 text-lg font-semibold mb-3 flex items-center gap-2">
                 <Crown size={20} />
                 Do you have a title equipped?
               </label>
@@ -221,8 +221,8 @@ const ConclaveCalculator = ({ onNavigate }) => {
                       relative flex items-center justify-center p-3 rounded-lg cursor-pointer
                       border-2 transition-all duration-200
                       ${selectedTitle === option.value.toString()
-                        ? 'bg-green-900/50 border-green-600 text-green-100'
-                        : 'bg-black/30 border-green-900/30 text-green-200 hover:bg-green-900/20'
+                        ? 'bg-red-900/50 border-red-600 text-red-100'
+                        : 'bg-black/30 border-red-900/30 text-red-200 hover:bg-red-900/20'
                       }
                     `}
                   >
@@ -242,7 +242,7 @@ const ConclaveCalculator = ({ onNavigate }) => {
 
             {/* Bond Selection */}
             <div className="mb-6">
-              <label className="block text-green-100 text-lg font-semibold mb-3 flex items-center gap-2">
+              <label className="block text-red-100 text-lg font-semibold mb-3 flex items-center gap-2">
                 <Star size={20} />
                 Do you have a Conclave familiar bond activated?
               </label>
@@ -254,8 +254,8 @@ const ConclaveCalculator = ({ onNavigate }) => {
                       relative flex items-center justify-center p-3 rounded-lg cursor-pointer
                       border-2 transition-all duration-200
                       ${selectedBond === option.value.toString()
-                        ? 'bg-green-900/50 border-green-600 text-green-100'
-                        : 'bg-black/30 border-green-900/30 text-green-200 hover:bg-green-900/20'
+                        ? 'bg-red-900/50 border-red-600 text-red-100'
+                        : 'bg-black/30 border-red-900/30 text-red-200 hover:bg-red-900/20'
                       }
                     `}
                   >
@@ -275,14 +275,14 @@ const ConclaveCalculator = ({ onNavigate }) => {
 
             {/* Calculation Breakdown */}
             {totalPoints > 0 && (
-              <div className="bg-black/30 rounded-lg p-4 border border-green-900/30 text-sm">
-                <h3 className="text-green-100 font-semibold mb-2">Calculation Breakdown:</h3>
-                <div className="text-green-200 space-y-1">
+              <div className="bg-black/30 rounded-lg p-4 border border-red-900/30 text-sm">
+                <h3 className="text-red-100 font-semibold mb-2">Calculation Breakdown:</h3>
+                <div className="text-red-200 space-y-1">
                   <p>Time: {hours || 0}h {minutes || 0}m {seconds || 0}s = {getTotalMinutes().toFixed(2)} minutes</p>
                   <p>Points per minute: {selectedTable}</p>
                   <p>Base points: {(getTotalMinutes() * parseInt(selectedTable)).toLocaleString()}</p>
                   <p>Total bonus: +{(parseInt(selectedTitle || 0) + parseInt(selectedBond || 0))}%</p>
-                  <p className="font-semibold text-green-100 pt-2">Final points: {totalPoints.toLocaleString()}</p>
+                  <p className="font-semibold text-red-100 pt-2">Final points: {totalPoints.toLocaleString()}</p>
                 </div>
               </div>
             )}
