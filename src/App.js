@@ -1,4 +1,4 @@
-// App.js - Improved version with single sidebar
+// App.js - Fixed with proper height handling
 import React, { useState } from 'react';
 import { Menu, X, Sword, Table, Flower, Gift } from 'lucide-react';
 import DominanceCalculator from './DominanceCalculator';
@@ -14,9 +14,9 @@ const App = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-gray-900 via-red-950 to-black">
-      {/* Sidebar - Now only in App.js */}
-      <div className={`${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 bg-black/60 backdrop-blur-lg border-r border-red-900/50`}>
+    <div className="flex min-h-screen bg-gradient-to-br from-gray-900 via-red-950 to-black">
+      {/* Sidebar */}
+      <div className={`${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 bg-black/60 backdrop-blur-lg border-r border-red-900/50 sticky top-0 h-screen`}>
         <div className="p-4">
           <div className="flex items-center justify-between mb-8">
             <div className={`${sidebarOpen ? 'block' : 'hidden'}`}>
@@ -91,7 +91,7 @@ const App = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1">
+      <div className="flex-1 min-h-screen">
         {currentView === 'dominance' && <DominanceCalculator />}
         {currentView === 'conclave' && <ConclaveCalculator />}
         {currentView === 'attraction' && <AttractionCalculator />}
