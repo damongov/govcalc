@@ -1,6 +1,6 @@
 // ConclaveCalculator.js
 import React, { useState, useEffect } from 'react';
-import { Trophy, Clock, Crown, Star, AlertCircle, Menu, X, Calculator, Users } from 'lucide-react';
+import { Trophy, Clock, Crown, Star, AlertCircle, Menu, X, Calculator, Users, Heart } from 'lucide-react';
 
 const ConclaveCalculator = ({ onNavigate }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -131,6 +131,13 @@ const ConclaveCalculator = ({ onNavigate }) => {
             >
               <Users size={20} />
               {sidebarOpen && <span>Conclave Calculator</span>}
+            </button>
+            <button 
+              onClick={() => onNavigate && onNavigate('intimacy')} 
+              className="w-full flex items-center gap-3 p-3 rounded-lg text-red-200 hover:bg-red-900/30 transition-colors text-left"
+            >
+              <Heart size={20} />
+              {sidebarOpen && <span>Intimacy Calculator</span>}
             </button>
           </nav>
         </div>
