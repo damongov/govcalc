@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Book, Calculator, Menu, X, Home, Settings, Info, ChartBar } from 'lucide-react';
+import { Book, Calculator, Menu, X, Users } from 'lucide-react';
 
 const BookIcon = ({ type }) => {
   const getBookStyle = (type) => {
@@ -317,17 +317,9 @@ const DominanceCalculator = () => {
               <Calculator size={20} />
               {sidebarOpen && <span>Dominance Calculator</span>}
             </a>
-            <a href="#" className="flex items-center gap-3 p-3 rounded-lg text-red-200 hover:bg-red-900/30 transition-colors">
-              <ChartBar size={20} />
-              {sidebarOpen && <span>Stats Tracker</span>}
-            </a>
-            <a href="#" className="flex items-center gap-3 p-3 rounded-lg text-red-200 hover:bg-red-900/30 transition-colors">
-              <Settings size={20} />
-              {sidebarOpen && <span>Settings</span>}
-            </a>
-            <a href="#" className="flex items-center gap-3 p-3 rounded-lg text-red-200 hover:bg-red-900/30 transition-colors">
-              <Info size={20} />
-              {sidebarOpen && <span>About</span>}
+            <a href="/ConclaveCalculator.js" className="flex items-center gap-3 p-3 rounded-lg text-red-200 hover:bg-red-900/30 transition-colors">
+              <Users size={20} />
+              {sidebarOpen && <span>Conclave Calculator</span>}
             </a>
           </nav>
         </div>
