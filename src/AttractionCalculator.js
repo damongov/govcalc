@@ -88,7 +88,7 @@ const AttractionCalculator = ({ onNavigate }) => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-6 sm:mb-8">
             <h1 className="text-2xl sm:text-4xl font-bold text-red-200 mb-2 flex items-center justify-center gap-3">
-              <Heart className="text-red-400" />
+              <Flower className="text-red-400" />
               Attraction Calculator
             </h1>
             <p className="text-red-100 text-sm sm:text-base">Calculate your attraction points from bouquets and charm items</p>
@@ -106,7 +106,7 @@ const AttractionCalculator = ({ onNavigate }) => {
                   </div>
                 </div>
                 <div className="flex items-center justify-center">
-                  <Heart className="text-red-400 animate-pulse" size={32} />
+                  <Flower className="text-red-400 animate-pulse" size={32} />
                 </div>
                 <div>
                   <div className="text-sm text-red-300 mb-1">Maximum</div>
