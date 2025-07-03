@@ -143,15 +143,15 @@ const ConclaveCalculator = ({ onNavigate }) => {
             <div className="text-center mb-6 sm:mb-8">
               <h1 className="text-2xl sm:text-4xl font-bold text-red-200 mb-2 flex items-center justify-center gap-3">
                 <Trophy className="text-red-400" />
-                Conclave Points Calculator
+                Conclave Table Calculator
               </h1>
-              <p className="text-red-100 text-sm sm:text-base">Calculate your conclave points based on time and bonuses</p>
+              <p className="text-red-100 text-sm sm:text-base">Calculate conclave table points based on duration, type, and bonuses</p>
             </div>
 
             <div className="bg-black/40 backdrop-blur-lg rounded-2xl p-4 sm:p-8 border border-red-900/50 shadow-2xl">
               {/* Results Box */}
               <div className="bg-gradient-to-r from-red-900/30 to-black/30 border border-red-700/50 rounded-xl p-6 mb-8 text-center">
-                <h2 className="text-lg text-red-200 mb-2">If you sit at this conclave table, you will get...</h2>
+                <h2 className="text-lg text-red-200 mb-2">If you sit at this conclave table, you will get ...</h2>
                 <div className="text-4xl sm:text-6xl font-bold text-red-100">
                   {totalPoints.toLocaleString()}
                 </div>
