@@ -69,7 +69,7 @@ const BookIcon = ({ type }) => {
   );
 };
 
-const DominanceCalculator = () => {
+const DominanceCalculator = ({ onNavigate }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [sections, setSections] = useState({
     section5000: {
@@ -313,14 +313,20 @@ const DominanceCalculator = () => {
           </div>
           
           <nav className="space-y-2">
-            <a href="#" className="flex items-center gap-3 p-3 rounded-lg bg-red-900/30 text-red-200 hover:bg-red-900/50 transition-colors">
+            <button 
+              onClick={() => onNavigate && onNavigate('dominance')} 
+              className="w-full flex items-center gap-3 p-3 rounded-lg bg-red-900/30 text-red-200 hover:bg-red-900/50 transition-colors text-left"
+            >
               <Calculator size={20} />
               {sidebarOpen && <span>Dominance Calculator</span>}
-            </a>
-            <a href="/ConclaveCalculator.js" className="flex items-center gap-3 p-3 rounded-lg text-red-200 hover:bg-red-900/30 transition-colors">
+            </button>
+            <button 
+              onClick={() => onNavigate && onNavigate('conclave')} 
+              className="w-full flex items-center gap-3 p-3 rounded-lg text-red-200 hover:bg-red-900/30 transition-colors text-left"
+            >
               <Users size={20} />
               {sidebarOpen && <span>Conclave Calculator</span>}
-            </a>
+            </button>
           </nav>
         </div>
       </div>
