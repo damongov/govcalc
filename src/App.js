@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import DominanceCalculator from './DominanceCalculator';
 import ConclaveCalculator from './ConclaveCalculator';
+import AttractionCalculator from './AttractionCalculator';
 
 const App = () => {
   const [currentView, setCurrentView] = useState('dominance');
@@ -17,6 +18,9 @@ const App = () => {
       )}
       {currentView === 'conclave' && (
         <ConclaveCalculator onNavigate={handleNavigate} />
+      )}
+      {currentView === 'attraction' && (
+        <AttractionCalculator onNavigate={handleNavigate} />
       )}
     </div>
   );
