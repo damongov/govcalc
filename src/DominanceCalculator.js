@@ -345,7 +345,7 @@ const DominanceCalculator = ({ onNavigate }) => {
             <div className="text-center mb-6 sm:mb-8">
               <h1 className="text-2xl sm:text-4xl font-bold text-red-200 mb-2 flex items-center justify-center gap-3">
                 <Book className="text-red-400" />
-                govcalc.io
+              Dominance Calculator
               </h1>
               <p className="text-red-100 mb-2 text-sm sm:text-base">Estimates Game of Vampires dominance based on books, auras, and more.</p>
               <p className="text-red-200 text-xs sm:text-sm">Questions? Discord: <a href="https://discord.com/users/399252368190865411" className="text-red-400 hover:text-red-300 underline">entj.</a></p>
