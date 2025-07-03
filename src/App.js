@@ -401,26 +401,7 @@ const DominanceCalculator = () => {
         </div>
 
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl mb-8">
-          {/* Attribute Boosts Summary */}
-          <div className="mb-6">
-            <h2 className="text-xl font-bold text-white mb-4 text-center">Total Attribute Boosts</h2>
-            <div className="grid grid-cols-5 gap-4">
-              {bookTypes.map((bookType) => (
-                <div key={bookType.name} className="bg-white/5 rounded-lg p-3 border border-white/10">
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="relative w-6 h-7">
-                      <BookIcon type={bookType.name} />
-                    </div>
-                    <h3 className="text-white font-medium text-sm text-center">{bookType.name}</h3>
-                    <div className="text-2xl font-bold text-yellow-300">
-                      +{attributeBoosts[bookType.name].toFixed(1)}%
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
+          {/* Calculate Dominance Button - First */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
             <button
               onClick={calculateDominance}
@@ -438,7 +419,8 @@ const DominanceCalculator = () => {
             </button>
           </div>
 
-          <div className="text-center">
+          {/* Total Dominance - Second */}
+          <div className="text-center mb-6">
             <div className="bg-gradient-to-r from-yellow-400/20 to-orange-400/20 border border-yellow-400/30 rounded-xl p-6">
               <h2 className="text-3xl font-bold text-yellow-300 mb-2">Total Dominance</h2>
               <div className="text-6xl font-bold text-white mb-4">
@@ -456,6 +438,26 @@ const DominanceCalculator = () => {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+
+          {/* Total Attribute Boosts - Third */}
+          <div>
+            <h2 className="text-xl font-bold text-white mb-4 text-center">Total Attribute Boosts</h2>
+            <div className="grid grid-cols-5 gap-4">
+              {bookTypes.map((bookType) => (
+                <div key={bookType.name} className="bg-white/5 rounded-lg p-3 border border-white/10">
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="relative w-6 h-7">
+                      <BookIcon type={bookType.name} />
+                    </div>
+                    <h3 className="text-white font-medium text-sm text-center">{bookType.name}</h3>
+                    <div className="text-2xl font-bold text-yellow-300">
+                      +{attributeBoosts[bookType.name].toFixed(1)}%
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
