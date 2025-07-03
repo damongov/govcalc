@@ -305,7 +305,7 @@ const DominanceCalculator = () => {
             GoV Dominance Calculator
           </h1>
           <p className="text-red-100 mb-2 text-sm sm:text-base">Estimates GoV dominance based on books, scripts, and more.</p>
-          <p className="text-red-200 text-xs sm:text-sm">Questions? Discord: <a href="https://discord.com/users/399252368190865411" className="text-red-400 hover:text-red-300 underline">entj.</a></p>
+          <p className="text-red-200 text-xs sm:text-sm">Questions? 147 (YAY) Damon on Discord: <a href="https://discord.com/users/399252368190865411" className="text-red-400 hover:text-red-300 underline">entj.</a></p>
         </div>
 
         <div className="bg-black/40 backdrop-blur-lg rounded-2xl p-4 sm:p-8 border border-red-900/50 shadow-2xl mb-6 sm:mb-8">
