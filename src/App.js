@@ -389,23 +389,23 @@ const DominanceCalculator = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-3 sm:p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2 flex items-center justify-center gap-3">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2 flex items-center justify-center gap-3">
             <Book className="text-purple-400" />
             GoV Dominance Calculator
           </h1>
-          <p className="text-purple-200 mb-2">Estimates GoV dominance based on books, scripts, and more.</p>
-          <p className="text-purple-300 text-sm">Questions? Discord: <a href="https://discord.com/users/399252368190865411" className="text-blue-400 hover:text-blue-300 underline">entj.</a></p>
+          <p className="text-purple-200 mb-2 text-sm sm:text-base">Estimates GoV dominance based on books, scripts, and more.</p>
+          <p className="text-purple-300 text-xs sm:text-sm">Questions? Discord: <a href="https://discord.com/users/399252368190865411" className="text-blue-400 hover:text-blue-300 underline">entj.</a></p>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl mb-8">
+        <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 sm:p-8 border border-white/20 shadow-2xl mb-6 sm:mb-8">
           {/* Calculate Dominance Button - First */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
             <button
               onClick={calculateDominance}
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-3 rounded-lg flex items-center gap-2 font-semibold transition-all transform hover:scale-105"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 sm:px-8 py-3 rounded-lg flex items-center gap-2 font-semibold transition-all transform hover:scale-105 text-sm sm:text-base"
             >
               <Calculator size={20} />
               Calculate Total Dominance
@@ -413,7 +413,7 @@ const DominanceCalculator = () => {
             
             <button
               onClick={resetAll}
-              className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base"
             >
               Reset All
             </button>
@@ -421,17 +421,17 @@ const DominanceCalculator = () => {
 
           {/* Total Dominance - Second */}
           <div className="text-center mb-6">
-            <div className="bg-gradient-to-r from-yellow-400/20 to-orange-400/20 border border-yellow-400/30 rounded-xl p-6">
-              <h2 className="text-3xl font-bold text-yellow-300 mb-2">Total Dominance</h2>
-              <div className="text-6xl font-bold text-white mb-4">
+            <div className="bg-gradient-to-r from-yellow-400/20 to-orange-400/20 border border-yellow-400/30 rounded-xl p-4 sm:p-6">
+              <h2 className="text-2xl sm:text-3xl font-bold text-yellow-300 mb-2">Total Dominance</h2>
+              <div className="text-4xl sm:text-6xl font-bold text-white mb-4">
                 {totalDominance.toLocaleString()}
               </div>
               
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-6">
                 {Object.entries(sections).map(([sectionKey, section]) => (
-                  <div key={sectionKey} className="bg-white/10 rounded-lg p-3">
-                    <div className="text-sm text-yellow-200">{section.title}</div>
-                    <div className="text-lg font-bold text-white">
+                  <div key={sectionKey} className="bg-white/10 rounded-lg p-2 sm:p-3">
+                    <div className="text-xs sm:text-sm text-yellow-200">{section.title}</div>
+                    <div className="text-base sm:text-lg font-bold text-white">
                       {(getSectionTotal(section) * section.value).toLocaleString()}
                     </div>
                     <div className="text-xs text-gray-300">{getSectionTotal(section)} books</div>
@@ -443,16 +443,16 @@ const DominanceCalculator = () => {
 
           {/* Total Attribute Boosts - Third */}
           <div>
-            <h2 className="text-xl font-bold text-white mb-4 text-center">Total Attribute Boosts</h2>
-            <div className="grid grid-cols-5 gap-4">
+            <h2 className="text-lg sm:text-xl font-bold text-white mb-4 text-center">Total Attribute Boosts</h2>
+            <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-4">
               {bookTypes.map((bookType) => (
-                <div key={bookType.name} className="bg-white/5 rounded-lg p-3 border border-white/10">
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="relative w-6 h-7">
+                <div key={bookType.name} className="bg-white/5 rounded-lg p-2 sm:p-3 border border-white/10">
+                  <div className="flex flex-col items-center gap-1 sm:gap-2">
+                    <div className="relative w-5 h-6 sm:w-6 sm:h-7">
                       <BookIcon type={bookType.name} />
                     </div>
-                    <h3 className="text-white font-medium text-sm text-center">{bookType.name}</h3>
-                    <div className="text-2xl font-bold text-yellow-300">
+                    <h3 className="text-white font-medium text-xs sm:text-sm text-center">{bookType.name}</h3>
+                    <div className="text-lg sm:text-2xl font-bold text-yellow-300">
                       +{attributeBoosts[bookType.name].toFixed(1)}%
                     </div>
                   </div>
@@ -462,7 +462,8 @@ const DominanceCalculator = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-4 gap-4 mb-8">
+        {/* Books Section - Made responsive */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
           {Object.entries(sections).map(([sectionKey, section]) => (
             <div key={sectionKey} className="bg-white/10 backdrop-blur-lg rounded-xl p-3 border border-white/20 shadow-2xl">
               <div className="text-center mb-3">
@@ -509,9 +510,9 @@ const DominanceCalculator = () => {
 
         {/* Warden Auras Section */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-white mb-4 text-center">Warden Auras (% Boosts)</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 text-center">Warden Auras (% Boosts)</h2>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
             {/* Wild Hunt */}
             <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20">
               <h3 className="text-lg font-bold text-green-300 mb-3">Wild Hunt</h3>
