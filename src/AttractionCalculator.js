@@ -130,7 +130,7 @@ const AttractionCalculator = ({ onNavigate }) => {
               className="w-full flex items-center gap-3 p-3 rounded-lg text-red-200 hover:bg-red-900/30 transition-colors text-left"
             >
               <Gift size={20} />
-              {sidebarOpen && <span>Intimacy Calculators</span>}
+              {sidebarOpen && <span>Intimacy Calculator</span>}
             </button>
           </nav>
 
@@ -144,7 +144,7 @@ const AttractionCalculator = ({ onNavigate }) => {
                 . A $1 donation supplies one family with clean drinking water for 12.5 days.
               </p>
               <p className="text-red-200 text-xs mt-3 text-right">
-                Thanks,<br />
+                With gratitude,<br />
                 [S-147] (YAY) Damon
               </p>
             </div>
