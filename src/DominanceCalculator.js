@@ -94,11 +94,13 @@ const DominanceCalculator = () => {
     section100x15: {
       title: "100 x 15 Section",
       value: 100,
+      wardenMultiplier: 15,
       books: { Random: 0, Strength: 0, Allure: 0, Intellect: 0, Spirit: 0 }
     },
     section1000x15: {
       title: "1000 x 15 Section",
       value: 1000,
+      wardenMultiplier: 15,
       books: { Random: 0, Strength: 0, Allure: 0, Intellect: 0, Spirit: 0 }
     }
   });
@@ -177,6 +179,12 @@ const DominanceCalculator = () => {
 
   const getSectionTotal = (section) => {
     return Object.values(section.books).reduce((sum, count) => sum + count, 0);
+  };
+
+  const getSectionDominance = (section) => {
+    const bookCount = getSectionTotal(section);
+    const baseValue = section.value * (section.wardenMultiplier || 1);
+    return bookCount * baseValue;
   };
 
   const calculateAttributeBoosts = () => {
@@ -366,7 +374,9 @@ const DominanceCalculator = () => {
           multiplier *= (1 + wardenAuras.vance_books / 100);
           multiplier *= (1 + wardenAuras.diana_books / 100);
           
-          total += count * section.value * multiplier;
+          // Calculate base value (with warden multiplier if applicable)
+          const baseValue = section.value * (section.wardenMultiplier || 1);
+          total += count * baseValue * multiplier;
         }
       });
     });
@@ -476,7 +486,7 @@ const DominanceCalculator = () => {
                     <div key={sectionKey} className="bg-black/30 rounded-lg p-2 sm:p-3 border border-red-900/30">
                       <div className="text-xs sm:text-sm text-red-200">{section.title}</div>
                       <div className="text-base sm:text-lg font-bold text-red-100">
-                        {(getSectionTotal(section) * section.value).toLocaleString()}
+                        {getSectionDominance(section).toLocaleString()}
                       </div>
                       <div className="text-xs text-gray-400">{getSectionTotal(section)} books</div>
                     </div>
@@ -516,11 +526,15 @@ const DominanceCalculator = () => {
                   <div className="text-center mb-3">
                     <h2 className="text-sm font-bold text-red-100">{section.title}</h2>
                     <div className="text-xs text-red-200">
-                      {sectionKey === 'section100x15' || sectionKey === 'section1000x15' 
-                        ? '15 random wardens' 
+                      {section.wardenMultiplier 
+                        ? `${section.wardenMultiplier} wardens x ${section.value} each` 
                         : 'Per book'}
                     </div>
-                    <div className="text-sm font-bold text-red-300">{section.value.toLocaleString()}</div>
+                    <div className="text-sm font-bold text-red-300">
+                      {section.wardenMultiplier 
+                        ? `${(section.value * section.wardenMultiplier).toLocaleString()} per book`
+                        : section.value.toLocaleString()}
+                    </div>
                   </div>
 
                   <div className="space-y-2 mb-3">
@@ -554,7 +568,7 @@ const DominanceCalculator = () => {
                         {getSectionTotal(section)} books
                       </div>
                       <div className="text-sm font-bold text-red-100">
-                        {(getSectionTotal(section) * section.value).toLocaleString()}
+                        {getSectionDominance(section).toLocaleString()}
                       </div>
                     </div>
                   </div>
