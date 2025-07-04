@@ -496,8 +496,7 @@ const DominanceCalculator = () => {
             </div>
           </div>
 
-          {/* Rest of the component remains the same... */}
-          {/* Books Section */}
+          {/* Books Section - Updated with horizontal layout */}
           <div className="mb-8">
             <h2 className="text-xl sm:text-2xl font-bold text-red-100 mb-4 text-center">Books</h2>
             
@@ -510,14 +509,16 @@ const DominanceCalculator = () => {
                     <div className="text-sm font-bold text-red-300">{section.value.toLocaleString()}</div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 mb-3">
+                  <div className="space-y-2 mb-3">
                     {bookTypes.map((bookType) => (
                       <div key={bookType.name} className="bg-black/30 rounded-lg p-2 border border-red-900/30">
-                        <div className="flex flex-col items-center gap-1">
-                          <div className="relative w-5 h-6">
-                            <BookIcon type={bookType.name} />
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="relative w-5 h-6">
+                              <BookIcon type={bookType.name} />
+                            </div>
+                            <h3 className="text-red-100 font-medium text-xs">{bookType.name}</h3>
                           </div>
-                          <h3 className="text-red-100 font-medium text-xs text-center">{bookType.name}</h3>
                           
                           <input
                             type="number"
@@ -525,7 +526,7 @@ const DominanceCalculator = () => {
                             step="1"
                             value={section.books[bookType.name]}
                             onChange={(e) => updateBookCount(sectionKey, bookType.name, e.target.value)}
-                            className="w-full bg-black/50 text-red-100 text-center text-sm font-bold px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none focus:ring-1 focus:ring-red-600/50"
+                            className="w-16 bg-black/50 text-red-100 text-center text-sm font-bold px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none focus:ring-1 focus:ring-red-600/50"
                             placeholder="0"
                           />
                         </div>
@@ -548,7 +549,7 @@ const DominanceCalculator = () => {
             </div>
           </div>
 
-          {/* Warden Auras Section - keeping the same structure */}
+          {/* Warden Auras Section */}
           <div className="mb-8">
             <h2 className="text-xl sm:text-2xl font-bold text-red-100 mb-4 text-center">Warden Auras (% Boosts)</h2>
             
