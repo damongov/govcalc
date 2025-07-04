@@ -70,38 +70,62 @@ const BookIcon = ({ type }) => {
 };
 
 const DominanceCalculator = () => {
-  const [sections, setSections] = useState({
-    section5000: {
-      title: "5,000 Section",
-      value: 5000,
-      books: { Random: 0, Strength: 0, Allure: 0, Intellect: 0, Spirit: 0 }
+  const [booksByAttribute, setBooksByAttribute] = useState({
+    Strength: {
+      attribute: 'Strength',
+      books: {
+        warfare1: { name: 'Warfare I', value: 100, count: 0 },
+        warfare2: { name: 'Warfare II', value: 400, count: 0 },
+        warfare3: { name: 'Warfare III', value: 1000, count: 0 },
+        warfare4: { name: 'Warfare IV', value: 5000, count: 0 },
+        combat1: { name: 'Combat I', value: 100, wardenMultiplier: 15, count: 0 },
+        combat2: { name: 'Combat II', value: 1000, wardenMultiplier: 15, count: 0 }
+      }
     },
-    section1000: {
-      title: "1,000 Section",
-      value: 1000,
-      books: { Random: 0, Strength: 0, Allure: 0, Intellect: 0, Spirit: 0 }
+    Allure: {
+      attribute: 'Allure',
+      books: {
+        glamor1: { name: 'Glamor I', value: 100, count: 0 },
+        glamor2: { name: 'Glamor II', value: 400, count: 0 },
+        glamor3: { name: 'Glamor III', value: 1000, count: 0 },
+        glamor4: { name: 'Glamor IV', value: 5000, count: 0 },
+        beauty1: { name: 'Beauty I', value: 100, wardenMultiplier: 15, count: 0 },
+        beauty2: { name: 'Beauty II', value: 1000, wardenMultiplier: 15, count: 0 }
+      }
     },
-    section400: {
-      title: "400 Section",
-      value: 400,
-      books: { Random: 0, Strength: 0, Allure: 0, Intellect: 0, Spirit: 0 }
+    Intellect: {
+      attribute: 'Intellect',
+      books: {
+        alchemy1: { name: 'Alchemy I', value: 100, count: 0 },
+        alchemy2: { name: 'Alchemy II', value: 400, count: 0 },
+        alchemy3: { name: 'Alchemy III', value: 1000, count: 0 },
+        alchemy4: { name: 'Alchemy IV', value: 5000, count: 0 },
+        history1: { name: 'History I', value: 100, wardenMultiplier: 15, count: 0 },
+        history2: { name: 'History II', value: 1000, wardenMultiplier: 15, count: 0 }
+      }
     },
-    section100: {
-      title: "100 Section",
-      value: 100,
-      books: { Random: 0, Strength: 0, Allure: 0, Intellect: 0, Spirit: 0 }
+    Spirit: {
+      attribute: 'Spirit',
+      books: {
+        occult1: { name: 'Occult I', value: 100, count: 0 },
+        occult2: { name: 'Occult II', value: 400, count: 0 },
+        occult3: { name: 'Occult III', value: 1000, count: 0 },
+        occult4: { name: 'Occult IV', value: 5000, count: 0 },
+        mysticism1: { name: 'Mysticism I', value: 100, wardenMultiplier: 15, count: 0 },
+        mysticism2: { name: 'Mysticism II', value: 1000, wardenMultiplier: 15, count: 0 }
+      }
     },
-    section100x15: {
-      title: "100 x 15 Section",
-      value: 100,
-      wardenMultiplier: 15,
-      books: { Random: 0, Strength: 0, Allure: 0, Intellect: 0, Spirit: 0 }
-    },
-    section1000x15: {
-      title: "1000 x 15 Section",
-      value: 1000,
-      wardenMultiplier: 15,
-      books: { Random: 0, Strength: 0, Allure: 0, Intellect: 0, Spirit: 0 }
+    Random: {
+      attribute: 'Random',
+      books: {
+        encyclopediaAE: { name: 'Encyclopedia A-E', value: 100, count: 0 },
+        encyclopediaAJ: { name: 'Encyclopedia A-J', value: 400, count: 0 },
+        encyclopediaAO: { name: 'Encyclopedia A-O', value: 1000, count: 0 },
+        encyclopediaAT: { name: 'Encyclopedia A-T', value: 5000, count: 0 },
+        encyclopediaAZ: { name: 'Encyclopedia A-Z', value: 10000, count: 0 },
+        arcana1: { name: 'Arcana I', value: 100, wardenMultiplier: 15, count: 0 },
+        arcana2: { name: 'Arcana II', value: 1000, wardenMultiplier: 15, count: 0 }
+      }
     }
   });
 
@@ -170,22 +194,12 @@ const DominanceCalculator = () => {
   const [loadError, setLoadError] = useState('');
 
   const bookTypes = [
-    { name: 'Random', color: 'bg-gray-500', icon: '🎲' },
     { name: 'Strength', color: 'bg-red-500', icon: '💪' },
     { name: 'Allure', color: 'bg-purple-500', icon: '💫' },
     { name: 'Intellect', color: 'bg-blue-500', icon: '🧠' },
-    { name: 'Spirit', color: 'bg-green-500', icon: '✨' }
+    { name: 'Spirit', color: 'bg-green-500', icon: '✨' },
+    { name: 'Random', color: 'bg-gray-500', icon: '🎲' }
   ];
-
-  const getSectionTotal = (section) => {
-    return Object.values(section.books).reduce((sum, count) => sum + count, 0);
-  };
-
-  const getSectionDominance = (section) => {
-    const bookCount = getSectionTotal(section);
-    const baseValue = section.value * (section.wardenMultiplier || 1);
-    return bookCount * baseValue;
-  };
 
   const calculateAttributeBoosts = () => {
     const boosts = {
@@ -239,15 +253,18 @@ const DominanceCalculator = () => {
 
   const attributeBoosts = calculateAttributeBoosts();
 
-  const updateBookCount = (sectionKey, bookType, value) => {
+  const updateBookCount = (attribute, bookKey, value) => {
     const numValue = parseInt(value) || 0;
-    setSections(prev => ({
+    setBooksByAttribute(prev => ({
       ...prev,
-      [sectionKey]: {
-        ...prev[sectionKey],
+      [attribute]: {
+        ...prev[attribute],
         books: {
-          ...prev[sectionKey].books,
-          [bookType]: Math.max(0, numValue)
+          ...prev[attribute].books,
+          [bookKey]: {
+            ...prev[attribute].books[bookKey],
+            count: Math.max(0, numValue)
+          }
         }
       }
     }));
@@ -264,8 +281,8 @@ const DominanceCalculator = () => {
   // Save/Load Functions
   const generateSaveCode = () => {
     const saveData = {
-      v: 1, // version number for future compatibility
-      s: sections,
+      v: 2, // version number for new structure
+      b: booksByAttribute,
       w: wardenAuras
     };
     
@@ -292,14 +309,14 @@ const DominanceCalculator = () => {
       const saveData = JSON.parse(jsonString);
       
       // Validate version
-      if (saveData.v !== 1) {
+      if (saveData.v !== 2) {
         setLoadError('Invalid save code version');
         return;
       }
 
-      // Load sections
-      if (saveData.s) {
-        setSections(saveData.s);
+      // Load books
+      if (saveData.b) {
+        setBooksByAttribute(saveData.b);
       }
 
       // Load warden auras
@@ -324,17 +341,17 @@ const DominanceCalculator = () => {
     });
   };
 
-  // Calculate dominance whenever sections or wardenAuras change
+  // Calculate dominance whenever books or wardenAuras change
   useEffect(() => {
     let total = 0;
     
-    Object.values(sections).forEach(section => {
-      Object.entries(section.books).forEach(([bookType, count]) => {
-        if (count > 0) {
+    Object.entries(booksByAttribute).forEach(([attribute, attributeData]) => {
+      Object.entries(attributeData.books).forEach(([bookKey, book]) => {
+        if (book.count > 0) {
           let multiplier = 1;
           
           // Apply attribute-specific bonuses (only books %)
-          switch(bookType) {
+          switch(attribute) {
             case 'Strength':
               multiplier *= (1 + wardenAuras.rudra_books / 100);
               multiplier *= (1 + wardenAuras.eddie_books / 100);
@@ -375,14 +392,14 @@ const DominanceCalculator = () => {
           multiplier *= (1 + wardenAuras.diana_books / 100);
           
           // Calculate base value (with warden multiplier if applicable)
-          const baseValue = section.value * (section.wardenMultiplier || 1);
-          total += count * baseValue * multiplier;
+          const baseValue = book.value * (book.wardenMultiplier || 1);
+          total += book.count * baseValue * multiplier;
         }
       });
     });
 
     setTotalDominance(Math.round(total));
-  }, [sections, wardenAuras]);
+  }, [booksByAttribute, wardenAuras]);
 
   return (
     <div className="overflow-y-auto h-full">
@@ -480,18 +497,6 @@ const DominanceCalculator = () => {
                 <div className="text-4xl sm:text-6xl font-bold text-red-100 mb-4">
                   {totalDominance.toLocaleString()}
                 </div>
-                
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mt-6">
-                  {Object.entries(sections).map(([sectionKey, section]) => (
-                    <div key={sectionKey} className="bg-black/30 rounded-lg p-2 sm:p-3 border border-red-900/30">
-                      <div className="text-xs sm:text-sm text-red-200">{section.title}</div>
-                      <div className="text-base sm:text-lg font-bold text-red-100">
-                        {getSectionDominance(section).toLocaleString()}
-                      </div>
-                      <div className="text-xs text-gray-400">{getSectionTotal(section)} books</div>
-                    </div>
-                  ))}
-                </div>
               </div>
             </div>
 
@@ -516,61 +521,51 @@ const DominanceCalculator = () => {
             </div>
           </div>
 
-          {/* Books Section - Updated with 6 sections */}
+          {/* Books Section - Organized by Attribute */}
           <div className="mb-8">
             <h2 className="text-xl sm:text-2xl font-bold text-red-100 mb-4 text-center">Books</h2>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-              {Object.entries(sections).map(([sectionKey, section]) => (
-                <div key={sectionKey} className="bg-black/40 backdrop-blur-lg rounded-xl p-3 border border-red-900/50 shadow-2xl">
-                  <div className="text-center mb-3">
-                    <h2 className="text-sm font-bold text-red-100">{section.title}</h2>
-                    <div className="text-xs text-red-200">
-                      {section.wardenMultiplier 
-                        ? `${section.wardenMultiplier} wardens x ${section.value} each` 
-                        : 'Per book'}
+            <div className="space-y-6">
+              {Object.entries(booksByAttribute).map(([attribute, attributeData]) => (
+                <div key={attribute} className="bg-black/40 backdrop-blur-lg rounded-xl p-4 border border-red-900/50">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="relative w-8 h-10">
+                      <BookIcon type={attribute} />
                     </div>
-                    <div className="text-sm font-bold text-red-300">
-                      {section.wardenMultiplier 
-                        ? `${(section.value * section.wardenMultiplier).toLocaleString()} per book`
-                        : section.value.toLocaleString()}
-                    </div>
+                    <h3 className="text-lg sm:text-xl font-bold text-red-100">{attribute} Books</h3>
                   </div>
-
-                  <div className="space-y-2 mb-3">
-                    {bookTypes.map((bookType) => (
-                      <div key={bookType.name} className="bg-black/30 rounded-lg p-2 border border-red-900/30">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <div className="relative w-5 h-6">
-                              <BookIcon type={bookType.name} />
-                            </div>
-                            <h3 className="text-red-100 font-medium text-xs">{bookType.name}</h3>
-                          </div>
-                          
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                    {Object.entries(attributeData.books).map(([bookKey, book]) => (
+                      <div key={bookKey} className="bg-black/30 rounded-lg p-3 border border-red-900/30">
+                        <div className="mb-2">
+                          <h4 className="text-red-100 font-semibold text-sm">{book.name}</h4>
+                          <p className="text-xs text-red-200">
+                            {book.wardenMultiplier 
+                              ? `${book.wardenMultiplier} wardens × ${book.value.toLocaleString()} each`
+                              : `+${book.value.toLocaleString()} to 1 warden`}
+                          </p>
+                          <p className="text-xs text-red-300 font-semibold">
+                            {(book.value * (book.wardenMultiplier || 1)).toLocaleString()} per book
+                          </p>
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
                           <input
                             type="number"
                             min="0"
                             step="1"
-                            value={section.books[bookType.name]}
-                            onChange={(e) => updateBookCount(sectionKey, bookType.name, e.target.value)}
-                            className="w-16 bg-black/50 text-red-100 text-center text-sm font-bold px-1 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none focus:ring-1 focus:ring-red-600/50"
+                            value={book.count}
+                            onChange={(e) => updateBookCount(attribute, bookKey, e.target.value)}
+                            className="flex-1 bg-black/50 text-red-100 text-center text-sm font-bold px-2 py-1 rounded border border-red-800/50 focus:border-red-600 focus:outline-none"
                             placeholder="0"
                           />
+                          <div className="text-xs text-gray-400 min-w-[60px] text-right">
+                            = {(book.count * book.value * (book.wardenMultiplier || 1)).toLocaleString()}
+                          </div>
                         </div>
                       </div>
                     ))}
-                  </div>
-
-                  <div className="bg-black/30 rounded-lg p-2 border border-red-900/30">
-                    <div className="text-center">
-                      <div className="text-xs text-gray-400">
-                        {getSectionTotal(section)} books
-                      </div>
-                      <div className="text-sm font-bold text-red-100">
-                        {getSectionDominance(section).toLocaleString()}
-                      </div>
-                    </div>
                   </div>
                 </div>
               ))}
