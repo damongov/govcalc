@@ -90,6 +90,16 @@ const DominanceCalculator = () => {
       title: "100 Section",
       value: 100,
       books: { Random: 0, Strength: 0, Allure: 0, Intellect: 0, Spirit: 0 }
+    },
+    section100x15: {
+      title: "100 x 15 Section",
+      value: 100,
+      books: { Random: 0, Strength: 0, Allure: 0, Intellect: 0, Spirit: 0 }
+    },
+    section1000x15: {
+      title: "1000 x 15 Section",
+      value: 1000,
+      books: { Random: 0, Strength: 0, Allure: 0, Intellect: 0, Spirit: 0 }
     }
   });
 
@@ -461,7 +471,7 @@ const DominanceCalculator = () => {
                   {totalDominance.toLocaleString()}
                 </div>
                 
-                <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mt-6">
                   {Object.entries(sections).map(([sectionKey, section]) => (
                     <div key={sectionKey} className="bg-black/30 rounded-lg p-2 sm:p-3 border border-red-900/30">
                       <div className="text-xs sm:text-sm text-red-200">{section.title}</div>
@@ -496,16 +506,20 @@ const DominanceCalculator = () => {
             </div>
           </div>
 
-          {/* Books Section - Updated with horizontal layout */}
+          {/* Books Section - Updated with 6 sections */}
           <div className="mb-8">
             <h2 className="text-xl sm:text-2xl font-bold text-red-100 mb-4 text-center">Books</h2>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {Object.entries(sections).map(([sectionKey, section]) => (
                 <div key={sectionKey} className="bg-black/40 backdrop-blur-lg rounded-xl p-3 border border-red-900/50 shadow-2xl">
                   <div className="text-center mb-3">
                     <h2 className="text-sm font-bold text-red-100">{section.title}</h2>
-                    <div className="text-xs text-red-200">Per book</div>
+                    <div className="text-xs text-red-200">
+                      {sectionKey === 'section100x15' || sectionKey === 'section1000x15' 
+                        ? '15 random wardens' 
+                        : 'Per book'}
+                    </div>
                     <div className="text-sm font-bold text-red-300">{section.value.toLocaleString()}</div>
                   </div>
 
@@ -549,7 +563,7 @@ const DominanceCalculator = () => {
             </div>
           </div>
 
-          {/* Warden Auras Section */}
+          {/* Warden Auras Section - Same as before */}
           <div className="mb-8">
             <h2 className="text-xl sm:text-2xl font-bold text-red-100 mb-4 text-center">Warden Auras (% Boosts)</h2>
             
