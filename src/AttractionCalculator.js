@@ -159,8 +159,8 @@ const AttractionCalculator = ({ onNavigate }) => {
   const totalMax = guaranteedTotal + randomTotalMax + sideGameTotal;
 
   return (
-    <div className="flex-1 overflow-y-auto min-h-full bg-gradient-to-br from-gray-900 via-red-950 to-black">
-      <div className="p-3 sm:p-6 min-h-full">
+    <div className="overflow-y-auto h-full">
+      <div className="p-3 sm:p-6">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-6 sm:mb-8">
             <h1 className="text-2xl sm:text-4xl font-bold text-red-200 mb-2 flex items-center justify-center gap-3">
