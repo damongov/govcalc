@@ -1,10 +1,11 @@
 // App.js - Improved version with single sidebar
 import React, { useState } from 'react';
-import { Menu, X, Sword, Table, Flower } from 'lucide-react';
+import { Menu, X, Sword, Table, Flower, Gift } from 'lucide-react';
 import { Analytics } from '@vercel/analytics/react';
 import DominanceCalculator from './DominanceCalculator';
 import ConclaveCalculator from './ConclaveCalculator';
 import AttractionCalculator from './AttractionCalculator';
+import IntimacyCalculator from './IntimacyCalculator'; // ADD THIS IMPORT
 
 const App = () => {
   const [currentView, setCurrentView] = useState('dominance');
@@ -63,6 +64,15 @@ const App = () => {
                 <Flower size={20} />
                 {sidebarOpen && <span>Attraction Calculator</span>}
               </button>
+              <button 
+                onClick={() => handleNavigate('intimacy')} 
+                className={`w-full flex items-center gap-3 p-3 rounded-lg text-red-200 transition-colors text-left ${
+                  currentView === 'intimacy' ? 'bg-red-900/30 hover:bg-red-900/50' : 'hover:bg-red-900/30'
+                }`}
+              >
+                <Gift size={20} />
+                {sidebarOpen && <span>Intimacy Calculator</span>}
+              </button>
             </nav>
 
             {sidebarOpen && (
@@ -88,6 +98,7 @@ const App = () => {
           {currentView === 'dominance' && <DominanceCalculator />}
           {currentView === 'conclave' && <ConclaveCalculator />}
           {currentView === 'attraction' && <AttractionCalculator />}
+          {currentView === 'intimacy' && <IntimacyCalculator />} {/* ADD THIS LINE */}
         </div>
       </div>
       <Analytics />
