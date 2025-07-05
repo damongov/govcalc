@@ -5,7 +5,7 @@ import { Analytics } from '@vercel/analytics/react';
 import DominanceCalculator from './DominanceCalculator';
 import ConclaveCalculator from './ConclaveCalculator';
 import AttractionCalculator from './AttractionCalculator';
-import IntimacyCalculator from './IntimacyCalculator'; // ADD THIS IMPORT
+import IntimacyCalculator from './IntimacyCalculator';
 
 const App = () => {
   const [currentView, setCurrentView] = useState('dominance');
@@ -18,8 +18,8 @@ const App = () => {
   return (
     <>
       <div className="flex h-screen bg-gradient-to-br from-gray-900 via-red-950 to-black">
-        {/* Sidebar - Now only in App.js */}
-        <div className={`${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 bg-black/60 backdrop-blur-lg border-r border-red-900/50`}>
+        {/* Sidebar - Removed bg-black/60 to let gradient show through */}
+        <div className={`${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 backdrop-blur-lg border-r border-red-900/50`}>
           <div className="p-4">
             <div className="flex items-center justify-between mb-8">
               <div className={`${sidebarOpen ? 'block' : 'hidden'}`}>
@@ -59,51 +59,3 @@ const App = () => {
                 onClick={() => handleNavigate('attraction')} 
                 className={`w-full flex items-center gap-3 p-3 rounded-lg text-red-200 transition-colors text-left ${
                   currentView === 'attraction' ? 'bg-red-900/30 hover:bg-red-900/50' : 'hover:bg-red-900/30'
-                }`}
-              >
-                <Flower size={20} />
-                {sidebarOpen && <span>Attraction Calculator</span>}
-              </button>
-              <button 
-                onClick={() => handleNavigate('intimacy')} 
-                className={`w-full flex items-center gap-3 p-3 rounded-lg text-red-200 transition-colors text-left ${
-                  currentView === 'intimacy' ? 'bg-red-900/30 hover:bg-red-900/50' : 'hover:bg-red-900/30'
-                }`}
-              >
-                <Gift size={20} />
-                {sidebarOpen && <span>Intimacy Calculator</span>}
-              </button>
-            </nav>
-
-            {sidebarOpen && (
-              <div className="mt-8 p-4 bg-black/30 rounded-lg">
-                <p className="text-red-200 text-xs mb-2">
-                  If you found this tool helpful, please consider donating to{' '}
-                  <a href="http://charitywater.org/" className="text-red-400 hover:text-red-300 underline" target="_blank" rel="noopener noreferrer">
-                    Charity: Water
-                  </a>
-                  . A $1 donation supplies one family with clean drinking water for 12.5 days.
-                </p>
-                <p className="text-red-200 text-xs mt-3 text-right">
-                  With gratitude,<br />
-                  [S-147] (YAY) Damon
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <div className="flex-1">
-          {currentView === 'dominance' && <DominanceCalculator />}
-          {currentView === 'conclave' && <ConclaveCalculator />}
-          {currentView === 'attraction' && <AttractionCalculator />}
-          {currentView === 'intimacy' && <IntimacyCalculator />} {/* ADD THIS LINE */}
-        </div>
-      </div>
-      <Analytics />
-    </>
-  );
-};
-
-export default App;
