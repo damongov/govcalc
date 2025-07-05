@@ -159,7 +159,7 @@ const IntimacyCalculator = ({ onNavigate }) => {
   const totalMax = guaranteedTotal + randomTotalMax + heraldTotal;
 
   return (
-    <div className="flex-1 overflow-y-auto">
+    <div className="overflow-y-auto h-full">
       <div className="p-3 sm:p-6">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-6 sm:mb-8">
