@@ -1,6 +1,6 @@
 // App.js - Improved version with single sidebar
 import React, { useState } from 'react';
-import { Menu, X, Sword, Table, Flower, Gift } from 'lucide-react';
+import { Menu, X, Sword, Table, Flower } from 'lucide-react';
 import { Analytics } from '@vercel/analytics/react';
 import DominanceCalculator from './DominanceCalculator';
 import ConclaveCalculator from './ConclaveCalculator';
@@ -62,15 +62,6 @@ const App = () => {
               >
                 <Flower size={20} />
                 {sidebarOpen && <span>Attraction Calculator</span>}
-              </button>
-              <button 
-                onClick={() => handleNavigate('intimacy')} 
-                className={`w-full flex items-center gap-3 p-3 rounded-lg text-red-200 transition-colors text-left ${
-                  currentView === 'intimacy' ? 'bg-red-900/30 hover:bg-red-900/50' : 'hover:bg-red-900/30'
-                }`}
-              >
-                <Gift size={20} />
-                {sidebarOpen && <span>Intimacy Calculator</span>}
               </button>
             </nav>
 
