@@ -18,6 +18,8 @@ const ConclaveCalculator = ({ onNavigate }) => {
     { value: 900, label: '+900/min' },
     { value: 1400, label: '+1400/min' },
     { value: 2100, label: '+2100/min' },
+    { value: 3500, label: '+3500/min' },
+    { value: 5000, label: '+5000/min' },
   ];
 
   const titleOptions = [
@@ -180,7 +182,7 @@ const ConclaveCalculator = ({ onNavigate }) => {
               <label className="block text-red-100 text-lg font-semibold mb-3">
                 What kind of table?
               </label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {tableOptions.map((option) => (
                   <label
                     key={option.value}
