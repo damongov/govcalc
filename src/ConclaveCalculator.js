@@ -34,8 +34,8 @@ const ConclaveCalculator = ({ onNavigate }) => {
     { value: 0, label: 'None' },
     { value: 2, label: 'Level 2: +2%' },
     { value: 4, label: 'Level 3: +4%' },
-    { value: 6, label: 'Level 5: +6%' },
-    { value: 10, label: 'Level 6: +10%' },
+    { value: 6, label: 'Level 4: +6%' },
+    { value: 10, label: 'Level 5: +10%' },
   ];
 
   // Validate and handle time inputs
