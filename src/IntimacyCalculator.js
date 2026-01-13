@@ -157,6 +157,7 @@ const IntimacyCalculator = ({ onNavigate }) => {
 
   const totalMin = guaranteedTotal + randomTotalMin + heraldTotal;
   const totalMax = guaranteedTotal + randomTotalMax + heraldTotal;
+  const totalAverage = Math.round((totalMin + totalMax) / 2);
 
   return (
     <div className="overflow-y-auto h-full">
@@ -246,25 +247,16 @@ const IntimacyCalculator = ({ onNavigate }) => {
           )}
 
           <div className="bg-black/40 backdrop-blur-lg rounded-2xl p-4 sm:p-8 border border-red-900/50 shadow-2xl">
-            {/* Total Results Box */}
+            {/* Total Results Box - Average Highlighted */}
             <div className="bg-gradient-to-r from-red-900/30 to-black/30 border border-red-700/50 rounded-xl p-6 mb-8 text-center">
-              <h2 className="text-lg text-red-200 mb-3">Total Intimacy Range</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                  <div className="text-sm text-red-300 mb-1">Minimum</div>
-                  <div className="text-3xl sm:text-4xl font-bold text-red-100">
-                    {totalMin.toLocaleString()}
-                  </div>
-                </div>
-                <div className="flex items-center justify-center">
-                  <Gift className="text-red-400 animate-pulse" size={32} />
-                </div>
-                <div>
-                  <div className="text-sm text-red-300 mb-1">Maximum</div>
-                  <div className="text-3xl sm:text-4xl font-bold text-red-100">
-                    {totalMax.toLocaleString()}
-                  </div>
-                </div>
+              <h2 className="text-lg text-red-200 mb-2">Expected Intimacy</h2>
+              <div className="text-5xl sm:text-6xl font-bold text-red-100 mb-4">
+                {totalAverage.toLocaleString()}
+              </div>
+              <div className="flex items-center justify-center gap-2 text-red-300 text-sm">
+                <span>Range: {totalMin.toLocaleString()}</span>
+                <Gift className="text-red-400" size={16} />
+                <span>{totalMax.toLocaleString()}</span>
               </div>
             </div>
 
@@ -536,7 +528,10 @@ const IntimacyCalculator = ({ onNavigate }) => {
                   <p>Random Intimacy: {randomTotalMin.toLocaleString()} - {randomTotalMax.toLocaleString()} points</p>
                   <p>Herald of Fate: {heraldTotal.toLocaleString()} points</p>
                   <p className="font-semibold text-red-100 pt-2">
-                    Total Range: {totalMin.toLocaleString()} - {totalMax.toLocaleString()} points
+                    Expected (Average): {totalAverage.toLocaleString()} points
+                  </p>
+                  <p className="text-red-300">
+                    Range: {totalMin.toLocaleString()} - {totalMax.toLocaleString()} points
                   </p>
                 </div>
               </div>
