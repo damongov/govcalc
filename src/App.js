@@ -6,6 +6,12 @@ import DominanceCalculator from './DominanceCalculator';
 import ConclaveCalculator from './ConclaveCalculator';
 import AttractionCalculator from './AttractionCalculator';
 import IntimacyCalculator from './IntimacyCalculator';
+import BatCalculator from './BatCalculator';
+
+// Bat icon component
+const BatIcon = ({ size = 20 }) => (
+  <span style={{ fontSize: size * 0.9, lineHeight: 1 }}>🦇</span>
+);
 
 const App = () => {
   const [currentView, setCurrentView] = useState('dominance');
@@ -73,6 +79,15 @@ const App = () => {
                 <Gift size={20} />
                 {sidebarOpen && <span>Intimacy Calculator</span>}
               </button>
+              <button 
+                onClick={() => handleNavigate('bat')} 
+                className={`w-full flex items-center gap-3 p-3 rounded-lg text-red-200 transition-colors text-left ${
+                  currentView === 'bat' ? 'bg-red-900/30 hover:bg-red-900/50' : 'hover:bg-red-900/30'
+                }`}
+              >
+                <BatIcon size={20} />
+                {sidebarOpen && <span>Big Bat Calculator</span>}
+              </button>
             </nav>
 
             {sidebarOpen && (
@@ -99,6 +114,7 @@ const App = () => {
           {currentView === 'conclave' && <ConclaveCalculator />}
           {currentView === 'attraction' && <AttractionCalculator />}
           {currentView === 'intimacy' && <IntimacyCalculator />}
+          {currentView === 'bat' && <BatCalculator />}
         </div>
       </div>
       <Analytics />
