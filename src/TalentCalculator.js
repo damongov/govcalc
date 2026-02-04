@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollText, BookOpen, Save, Upload, Copy, Check } from 'lucide-react';
+import { ScrollText, BookOpen, Save, Upload, Copy, Check, Sparkles, Shield, Plus, Trash2 } from 'lucide-react';
 
 const TalentCalculator = () => {
   const [scripts, setScripts] = useState({
@@ -18,9 +18,52 @@ const TalentCalculator = () => {
     level1: 0
   });
 
+  const [talentScrolls, setTalentScrolls] = useState({
+    superior: 0,
+    fine: 0,
+    basic: 0
+  });
+
+  // Wardens state - start with 5 default wardens
+  const createDefaultWardens = () => [
+    { id: 1, name: '', level: 1, exp: 0 },
+    { id: 2, name: '', level: 1, exp: 0 },
+    { id: 3, name: '', level: 1, exp: 0 },
+    { id: 4, name: '', level: 1, exp: 0 },
+    { id: 5, name: '', level: 1, exp: 0 },
+  ];
+  
+  const [wardens, setWardens] = useState(createDefaultWardens());
+  const [nextWardenId, setNextWardenId] = useState(6);
+
   const [scriptsTotal, setScriptsTotal] = useState(0);
   const [scrollsTotal, setScrollsTotal] = useState(0);
+  const [talentScrollsTotal, setTalentScrollsTotal] = useState(0);
+  const [talentScrollsExp, setTalentScrollsExp] = useState({ superior: 0, fine: 0, basic: 0 });
+  const [wardensTotal, setWardensTotal] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
+  
+  // Warden divisors by level
+  const wardenDivisors = {
+    6: 1200,
+    5: 1000,
+    4: 800,
+    3: 600,
+    2: 400,
+    1: 200
+  };
+
+  // Each level multiplies by its level number
+  const getWardenPoints = (warden) => {
+    const divisor = wardenDivisors[warden.level];
+    const basePoints = Math.floor(warden.exp / divisor);
+    return basePoints * warden.level;
+  };
+
+  const getWardenRemainder = (warden) => {
+    const divisor = wardenDivisors[warden.level];
+    return warden.exp % divisor;
+  };
 
   // Save/Load state
   const [showSaveLoad, setShowSaveLoad] = useState(false);
@@ -47,10 +90,36 @@ const TalentCalculator = () => {
     setScrollsTotal(total);
   }, [scrolls]);
 
+  // Calculate talent scrolls total
+  useEffect(() => {
+    const superiorExp = talentScrolls.superior * 200;
+    const fineExp = talentScrolls.fine * 100;
+    const basicExp = talentScrolls.basic * 50;
+    
+    setTalentScrollsExp({
+      superior: superiorExp,
+      fine: fineExp,
+      basic: basicExp
+    });
+    
+    const totalExp = superiorExp + fineExp + basicExp;
+    const totalPoints = Math.floor(totalExp / 200);
+    setTalentScrollsTotal(totalPoints);
+  }, [talentScrolls]);
+
+  // Calculate wardens total
+  useEffect(() => {
+    const total = wardens.reduce((sum, warden) => {
+      const divisor = wardenDivisors[warden.level];
+      return sum + Math.floor(warden.exp / divisor);
+    }, 0);
+    setWardensTotal(total);
+  }, [wardens]);
+
   // Calculate grand total
   useEffect(() => {
-    setGrandTotal(scriptsTotal + scrollsTotal);
-  }, [scriptsTotal, scrollsTotal]);
+    setGrandTotal(scriptsTotal + scrollsTotal + talentScrollsTotal + wardensTotal);
+  }, [scriptsTotal, scrollsTotal, talentScrollsTotal, wardensTotal]);
 
   const updateScript = (type, value) => {
     const numValue = parseInt(value) || 0;
@@ -68,12 +137,60 @@ const TalentCalculator = () => {
     }));
   };
 
+  const updateTalentScroll = (type, value) => {
+    const numValue = parseInt(value) || 0;
+    setTalentScrolls(prev => ({
+      ...prev,
+      [type]: Math.max(0, numValue)
+    }));
+  };
+
+  // Warden management functions
+  const updateWarden = (id, field, value) => {
+    setWardens(prev => prev.map(warden => {
+      if (warden.id === id) {
+        if (field === 'exp') {
+          return { ...warden, [field]: Math.max(0, parseInt(value) || 0) };
+        } else if (field === 'level') {
+          return { ...warden, [field]: parseInt(value) };
+        } else {
+          return { ...warden, [field]: value };
+        }
+      }
+      return warden;
+    }));
+  };
+
+  const addWarden = () => {
+    setWardens(prev => [...prev, { id: nextWardenId, name: '', level: 1, exp: 0 }]);
+    setNextWardenId(prev => prev + 1);
+  };
+
+  const removeWarden = (id) => {
+    if (wardens.length > 1) {
+      setWardens(prev => prev.filter(warden => warden.id !== id));
+    }
+  };
+
+  const getWardenPoints = (warden) => {
+    const divisor = wardenDivisors[warden.level];
+    return Math.floor(warden.exp / divisor);
+  };
+
+  const getWardenRemainder = (warden) => {
+    const divisor = wardenDivisors[warden.level];
+    return warden.exp % divisor;
+  };
+
   // Save/Load Functions
   const generateSaveCode = () => {
     const saveData = {
-      v: 1,
+      v: 3,
       s: scripts,
-      l: scrolls
+      l: scrolls,
+      t: talentScrolls,
+      w: wardens,
+      wid: nextWardenId
     };
     
     try {
@@ -98,7 +215,7 @@ const TalentCalculator = () => {
       const jsonString = atob(loadCode.trim());
       const saveData = JSON.parse(jsonString);
       
-      if (saveData.v !== 1) {
+      if (saveData.v !== 1 && saveData.v !== 2 && saveData.v !== 3) {
         setLoadError('Invalid save code version');
         return;
       }
@@ -109,6 +226,21 @@ const TalentCalculator = () => {
 
       if (saveData.l) {
         setScrolls(saveData.l);
+      }
+
+      if (saveData.t) {
+        setTalentScrolls(saveData.t);
+      }
+
+      if (saveData.w) {
+        setWardens(saveData.w);
+        if (saveData.wid) {
+          setNextWardenId(saveData.wid);
+        } else {
+          // Calculate next ID from existing wardens
+          const maxId = Math.max(...saveData.w.map(w => w.id));
+          setNextWardenId(maxId + 1);
+        }
       }
 
       setLoadCode('');
@@ -127,6 +259,8 @@ const TalentCalculator = () => {
     });
   };
 
+  const totalTalentExp = talentScrollsExp.superior + talentScrollsExp.fine + talentScrollsExp.basic;
+
   return (
     <div className="overflow-y-auto h-full">
       <div className="p-3 sm:p-6">
@@ -136,7 +270,7 @@ const TalentCalculator = () => {
               <ScrollText className="text-red-400" />
               Talent Calculator
             </h1>
-            <p className="text-red-100 text-sm sm:text-base">Calculate your total talent points from scripts and level scrolls</p>
+            <p className="text-red-100 text-sm sm:text-base">Calculate your total talent points from scripts and scrolls</p>
           </div>
 
           {/* Save/Load Button */}
@@ -221,10 +355,26 @@ const TalentCalculator = () => {
               <div className="text-5xl sm:text-6xl font-bold text-red-100 mb-4">
                 {grandTotal.toLocaleString()}
               </div>
-              <div className="flex items-center justify-center gap-4 text-red-300 text-sm">
-                <span>Scripts: {scriptsTotal.toLocaleString()}</span>
-                <span>•</span>
-                <span>Scrolls: {scrollsTotal.toLocaleString()}</span>
+              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-red-300 text-sm">
+                <span className="flex items-center gap-1">
+                  <span className="text-yellow-400">~</span> Scripts: {scriptsTotal.toLocaleString()}
+                  <span className="text-yellow-400 text-xs">(est.)</span>
+                </span>
+                <span className="hidden sm:inline">•</span>
+                <span className="flex items-center gap-1">
+                  <span className="text-green-400">✓</span> Level Scrolls: {scrollsTotal.toLocaleString()}
+                </span>
+                <span className="hidden sm:inline">•</span>
+                <span className="flex items-center gap-1">
+                  <span className="text-green-400">✓</span> Talent Scrolls: {talentScrollsTotal.toLocaleString()}
+                </span>
+                <span className="hidden sm:inline">•</span>
+                <span className="flex items-center gap-1">
+                  <span className="text-green-400">✓</span> Wardens: {wardensTotal.toLocaleString()}
+                </span>
+              </div>
+              <div className="mt-3 text-xs text-red-400">
+                <span className="text-yellow-400">~</span> = Estimated | <span className="text-green-400">✓</span> = Guaranteed
               </div>
             </div>
 
@@ -233,9 +383,16 @@ const TalentCalculator = () => {
               <div className="flex items-center gap-2 mb-4">
                 <BookOpen className="text-red-300" size={24} />
                 <h2 className="text-xl font-bold text-red-100">Scripts</h2>
+                <span className="bg-yellow-900/50 text-yellow-300 text-xs px-2 py-1 rounded-full border border-yellow-600/50">
+                  Estimated
+                </span>
               </div>
               
               <div className="bg-black/30 rounded-xl p-4 border border-red-900/30">
+                <div className="bg-yellow-900/20 border border-yellow-700/30 rounded-lg p-3 mb-4 text-sm text-yellow-200">
+                  <strong>Note:</strong> Script talent points are <em>estimated</em> based on typical values. Actual results may vary.
+                </div>
+                
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
                   {/* Strength */}
                   <div className="bg-black/40 rounded-lg p-4 border border-red-700/50">
@@ -253,7 +410,7 @@ const TalentCalculator = () => {
                       placeholder="0"
                     />
                     <div className="text-center mt-2 text-sm text-red-200">
-                      = {scripts.strength.toLocaleString()} pts
+                      ≈ {scripts.strength.toLocaleString()} pts
                     </div>
                   </div>
 
@@ -273,7 +430,7 @@ const TalentCalculator = () => {
                       placeholder="0"
                     />
                     <div className="text-center mt-2 text-sm text-purple-200">
-                      = {scripts.allure.toLocaleString()} pts
+                      ≈ {scripts.allure.toLocaleString()} pts
                     </div>
                   </div>
 
@@ -293,7 +450,7 @@ const TalentCalculator = () => {
                       placeholder="0"
                     />
                     <div className="text-center mt-2 text-sm text-blue-200">
-                      = {scripts.intellect.toLocaleString()} pts
+                      ≈ {scripts.intellect.toLocaleString()} pts
                     </div>
                   </div>
 
@@ -313,14 +470,14 @@ const TalentCalculator = () => {
                       placeholder="0"
                     />
                     <div className="text-center mt-2 text-sm text-green-200">
-                      = {scripts.spirit.toLocaleString()} pts
+                      ≈ {scripts.spirit.toLocaleString()} pts
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-gradient-to-r from-red-900/20 to-black/20 rounded-lg p-3 text-center">
-                  <div className="text-sm text-red-300">Scripts Total</div>
-                  <div className="text-2xl font-bold text-red-100">{scriptsTotal.toLocaleString()} points</div>
+                  <div className="text-sm text-red-300">Scripts Total <span className="text-yellow-400">(Estimated)</span></div>
+                  <div className="text-2xl font-bold text-red-100">≈ {scriptsTotal.toLocaleString()} points</div>
                 </div>
               </div>
             </div>
@@ -330,6 +487,9 @@ const TalentCalculator = () => {
               <div className="flex items-center gap-2 mb-4">
                 <ScrollText className="text-red-300" size={24} />
                 <h2 className="text-xl font-bold text-red-100">Level Scrolls</h2>
+                <span className="bg-green-900/50 text-green-300 text-xs px-2 py-1 rounded-full border border-green-600/50">
+                  Guaranteed
+                </span>
               </div>
               
               <div className="bg-black/30 rounded-xl p-4 border border-red-900/30">
@@ -456,8 +616,224 @@ const TalentCalculator = () => {
                 </div>
 
                 <div className="bg-gradient-to-r from-red-900/20 to-black/20 rounded-lg p-3 text-center">
-                  <div className="text-sm text-red-300">Level Scrolls Total</div>
+                  <div className="text-sm text-red-300">Level Scrolls Total <span className="text-green-400">(Guaranteed)</span></div>
                   <div className="text-2xl font-bold text-red-100">{scrollsTotal.toLocaleString()} points</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Talent Scrolls Section */}
+            <div className="mb-8">
+              <div className="flex items-center gap-2 mb-4">
+                <Sparkles className="text-amber-300" size={24} />
+                <h2 className="text-xl font-bold text-red-100">Talent Scrolls</h2>
+                <span className="bg-green-900/50 text-green-300 text-xs px-2 py-1 rounded-full border border-green-600/50">
+                  Guaranteed
+                </span>
+              </div>
+              
+              <div className="bg-black/30 rounded-xl p-4 border border-amber-900/30">
+                <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-3 mb-4 text-sm text-amber-200">
+                  <strong>Conversion:</strong> 200 Talent EXP = 1 Talent Point (whole numbers only)
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                  {/* Superior Talent Scroll */}
+                  <div className="bg-black/40 rounded-lg p-4 border border-amber-500/50">
+                    <div className="text-center mb-3">
+                      <h3 className="text-amber-300 font-semibold mb-1">Superior</h3>
+                      <div className="text-sm text-amber-200">200 EXP each</div>
+                    </div>
+                    <input
+                      type="number"
+                      min="0"
+                      step="1"
+                      value={talentScrolls.superior}
+                      onChange={(e) => updateTalentScroll('superior', e.target.value)}
+                      className="w-full bg-black/50 text-amber-100 text-center text-xl font-bold px-3 py-2 rounded-lg border border-amber-500/50 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/50"
+                      placeholder="0"
+                    />
+                    <div className="text-center mt-2 text-sm text-amber-200">
+                      = {talentScrollsExp.superior.toLocaleString()} EXP
+                    </div>
+                  </div>
+
+                  {/* Fine Talent Scroll */}
+                  <div className="bg-black/40 rounded-lg p-4 border border-sky-500/50">
+                    <div className="text-center mb-3">
+                      <h3 className="text-sky-300 font-semibold mb-1">Fine</h3>
+                      <div className="text-sm text-sky-200">100 EXP each</div>
+                    </div>
+                    <input
+                      type="number"
+                      min="0"
+                      step="1"
+                      value={talentScrolls.fine}
+                      onChange={(e) => updateTalentScroll('fine', e.target.value)}
+                      className="w-full bg-black/50 text-sky-100 text-center text-xl font-bold px-3 py-2 rounded-lg border border-sky-500/50 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/50"
+                      placeholder="0"
+                    />
+                    <div className="text-center mt-2 text-sm text-sky-200">
+                      = {talentScrollsExp.fine.toLocaleString()} EXP
+                    </div>
+                  </div>
+
+                  {/* Basic Talent Scroll */}
+                  <div className="bg-black/40 rounded-lg p-4 border border-stone-500/50">
+                    <div className="text-center mb-3">
+                      <h3 className="text-stone-300 font-semibold mb-1">Basic</h3>
+                      <div className="text-sm text-stone-200">50 EXP each</div>
+                    </div>
+                    <input
+                      type="number"
+                      min="0"
+                      step="1"
+                      value={talentScrolls.basic}
+                      onChange={(e) => updateTalentScroll('basic', e.target.value)}
+                      className="w-full bg-black/50 text-stone-100 text-center text-xl font-bold px-3 py-2 rounded-lg border border-stone-500/50 focus:border-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-400/50"
+                      placeholder="0"
+                    />
+                    <div className="text-center mt-2 text-sm text-stone-200">
+                      = {talentScrollsExp.basic.toLocaleString()} EXP
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-amber-900/20 to-black/20 rounded-lg p-3 text-center">
+                  <div className="text-sm text-amber-300 mb-1">
+                    Total EXP: {totalTalentExp.toLocaleString()} ÷ 200
+                  </div>
+                  <div className="text-sm text-red-300">Talent Scrolls Total <span className="text-green-400">(Guaranteed)</span></div>
+                  <div className="text-2xl font-bold text-red-100">{talentScrollsTotal.toLocaleString()} points</div>
+                  {totalTalentExp % 200 > 0 && (
+                    <div className="text-xs text-amber-400 mt-1">
+                      ({totalTalentExp % 200} EXP remaining toward next point)
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Wardens Section */}
+            <div className="mb-8">
+              <div className="flex items-center gap-2 mb-4">
+                <Shield className="text-emerald-300" size={24} />
+                <h2 className="text-xl font-bold text-red-100">Wardens</h2>
+                <span className="bg-green-900/50 text-green-300 text-xs px-2 py-1 rounded-full border border-green-600/50">
+                  Guaranteed
+                </span>
+              </div>
+              
+              <div className="bg-black/30 rounded-xl p-4 border border-emerald-900/30">
+                <div className="bg-emerald-900/20 border border-emerald-700/30 rounded-lg p-3 mb-4 text-sm text-emerald-200">
+                  <strong>Conversion rates by talent level:</strong>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mt-2 text-xs">
+                    <span>L6: (EXP÷1200)×6</span>
+                    <span>L5: (EXP÷1000)×5</span>
+                    <span>L4: (EXP÷800)×4</span>
+                    <span>L3: (EXP÷600)×3</span>
+                    <span>L2: (EXP÷400)×2</span>
+                    <span>L1: (EXP÷200)×1</span>
+                  </div>
+                </div>
+                
+                <div className="space-y-3 mb-4">
+                  {wardens.map((warden, index) => (
+                    <div key={warden.id} className="bg-black/40 rounded-lg p-3 border border-emerald-700/30">
+                      <div className="flex flex-wrap items-center gap-3">
+                        {/* Warden Number/Name */}
+                        <div className="flex-1 min-w-[120px]">
+                          <label className="text-xs text-emerald-400 mb-1 block">Name (optional)</label>
+                          <input
+                            type="text"
+                            value={warden.name}
+                            onChange={(e) => updateWarden(warden.id, 'name', e.target.value)}
+                            placeholder={`Warden ${index + 1}`}
+                            className="w-full bg-black/50 text-emerald-100 px-3 py-2 rounded border border-emerald-600/50 focus:border-emerald-400 focus:outline-none text-sm"
+                          />
+                        </div>
+                        
+                        {/* Talent Level Dropdown */}
+                        <div className="w-32">
+                          <label className="text-xs text-emerald-400 mb-1 block">Talent Level</label>
+                          <select
+                            value={warden.level}
+                            onChange={(e) => updateWarden(warden.id, 'level', e.target.value)}
+                            className="w-full bg-black/50 text-emerald-100 px-3 py-2 rounded border border-emerald-600/50 focus:border-emerald-400 focus:outline-none text-sm"
+                          >
+                            <option value={6}>Level 6</option>
+                            <option value={5}>Level 5</option>
+                            <option value={4}>Level 4</option>
+                            <option value={3}>Level 3</option>
+                            <option value={2}>Level 2</option>
+                            <option value={1}>Level 1</option>
+                          </select>
+                        </div>
+                        
+                        {/* Talent EXP */}
+                        <div className="w-32">
+                          <label className="text-xs text-emerald-400 mb-1 block">Talent EXP</label>
+                          <input
+                            type="number"
+                            min="0"
+                            step="1"
+                            value={warden.exp}
+                            onChange={(e) => updateWarden(warden.id, 'exp', e.target.value)}
+                            className="w-full bg-black/50 text-emerald-100 px-3 py-2 rounded border border-emerald-600/50 focus:border-emerald-400 focus:outline-none text-sm"
+                            placeholder="0"
+                          />
+                        </div>
+                        
+                        {/* Points Display */}
+                        <div className="w-24 text-center">
+                          <label className="text-xs text-emerald-400 mb-1 block">Points</label>
+                          <div className="bg-emerald-900/30 rounded px-3 py-2 text-emerald-100 font-bold">
+                            {getWardenPoints(warden).toLocaleString()}
+                          </div>
+                        </div>
+                        
+                        {/* Remove Button */}
+                        <div className="flex items-end">
+                          <button
+                            onClick={() => removeWarden(warden.id)}
+                            disabled={wardens.length <= 1}
+                            className={`p-2 rounded transition-colors ${
+                              wardens.length <= 1 
+                                ? 'text-gray-600 cursor-not-allowed' 
+                                : 'text-red-400 hover:bg-red-900/30 hover:text-red-300'
+                            }`}
+                            title={wardens.length <= 1 ? 'Must have at least one warden' : 'Remove warden'}
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </div>
+                      </div>
+                      
+                      {/* Remainder info */}
+                      {warden.exp > 0 && getWardenRemainder(warden) > 0 && (
+                        <div className="text-xs text-emerald-400 mt-2 pl-1">
+                          {getWardenRemainder(warden).toLocaleString()} EXP remaining toward next point (need {wardenDivisors[warden.level] - getWardenRemainder(warden)} more)
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Add Warden Button */}
+                <button
+                  onClick={addWarden}
+                  className="w-full bg-emerald-800/30 hover:bg-emerald-800/50 text-emerald-200 px-4 py-2 rounded-lg border border-emerald-700/50 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Plus size={18} />
+                  Add Warden
+                </button>
+
+                <div className="bg-gradient-to-r from-emerald-900/20 to-black/20 rounded-lg p-3 text-center mt-4">
+                  <div className="text-sm text-emerald-300">Wardens Total <span className="text-green-400">(Guaranteed)</span></div>
+                  <div className="text-2xl font-bold text-red-100">{wardensTotal.toLocaleString()} points</div>
+                  <div className="text-xs text-emerald-400 mt-1">
+                    from {wardens.filter(w => w.exp > 0).length} warden{wardens.filter(w => w.exp > 0).length !== 1 ? 's' : ''} with EXP
+                  </div>
                 </div>
               </div>
             </div>
@@ -467,14 +843,20 @@ const TalentCalculator = () => {
               <div className="bg-black/30 rounded-lg p-4 border border-red-900/30 text-sm">
                 <h3 className="text-red-100 font-semibold mb-2">Summary:</h3>
                 <div className="text-red-200 space-y-1">
-                  <p>Scripts: {scriptsTotal.toLocaleString()} points</p>
+                  <p>
+                    <span className="text-yellow-400">~</span> Scripts: ≈ {scriptsTotal.toLocaleString()} points 
+                    <span className="text-yellow-400 text-xs ml-1">(estimated)</span>
+                  </p>
                   <p className="pl-4 text-xs text-red-300">
                     Strength: {scripts.strength.toLocaleString()} | 
                     Allure: {scripts.allure.toLocaleString()} | 
                     Intellect: {scripts.intellect.toLocaleString()} | 
                     Spirit: {scripts.spirit.toLocaleString()}
                   </p>
-                  <p>Level Scrolls: {scrollsTotal.toLocaleString()} points</p>
+                  <p>
+                    <span className="text-green-400">✓</span> Level Scrolls: {scrollsTotal.toLocaleString()} points
+                    <span className="text-green-400 text-xs ml-1">(guaranteed)</span>
+                  </p>
                   <p className="pl-4 text-xs text-red-300">
                     L6: {scrolls.level6} ({scrolls.level6 * 6}) | 
                     L5: {scrolls.level5} ({scrolls.level5 * 5}) | 
@@ -483,6 +865,29 @@ const TalentCalculator = () => {
                     L2: {scrolls.level2} ({scrolls.level2 * 2}) | 
                     L1: {scrolls.level1} ({scrolls.level1 * 1})
                   </p>
+                  <p>
+                    <span className="text-green-400">✓</span> Talent Scrolls: {talentScrollsTotal.toLocaleString()} points
+                    <span className="text-green-400 text-xs ml-1">(guaranteed)</span>
+                  </p>
+                  <p className="pl-4 text-xs text-red-300">
+                    Superior: {talentScrolls.superior} ({talentScrollsExp.superior} EXP) | 
+                    Fine: {talentScrolls.fine} ({talentScrollsExp.fine} EXP) | 
+                    Basic: {talentScrolls.basic} ({talentScrollsExp.basic} EXP) |
+                    Total: {totalTalentExp} EXP
+                  </p>
+                  <p>
+                    <span className="text-green-400">✓</span> Wardens: {wardensTotal.toLocaleString()} points
+                    <span className="text-green-400 text-xs ml-1">(guaranteed)</span>
+                  </p>
+                  <div className="pl-4 text-xs text-red-300">
+                    {wardens.filter(w => w.exp > 0).map((warden, idx) => (
+                      <span key={warden.id}>
+                        {warden.name || `Warden ${wardens.indexOf(warden) + 1}`} (L{warden.level}): {warden.exp.toLocaleString()} EXP → {getWardenPoints(warden)} pts
+                        {idx < wardens.filter(w => w.exp > 0).length - 1 ? ' | ' : ''}
+                      </span>
+                    ))}
+                    {wardens.filter(w => w.exp > 0).length === 0 && <span>No wardens with EXP entered</span>}
+                  </div>
                   <p className="font-semibold text-red-100 pt-2 border-t border-red-900/30 mt-2">
                     Grand Total: {grandTotal.toLocaleString()} talent points
                   </p>
