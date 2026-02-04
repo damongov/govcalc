@@ -111,7 +111,8 @@ const TalentCalculator = () => {
   useEffect(() => {
     const total = wardens.reduce((sum, warden) => {
       const divisor = wardenDivisors[warden.level];
-      return sum + Math.floor(warden.exp / divisor);
+      const basePoints = Math.floor(warden.exp / divisor);
+      return sum + (basePoints * warden.level);
     }, 0);
     setWardensTotal(total);
   }, [wardens]);
@@ -170,16 +171,6 @@ const TalentCalculator = () => {
     if (wardens.length > 1) {
       setWardens(prev => prev.filter(warden => warden.id !== id));
     }
-  };
-
-  const getWardenPoints = (warden) => {
-    const divisor = wardenDivisors[warden.level];
-    return Math.floor(warden.exp / divisor);
-  };
-
-  const getWardenRemainder = (warden) => {
-    const divisor = wardenDivisors[warden.level];
-    return warden.exp % divisor;
   };
 
   // Save/Load Functions
