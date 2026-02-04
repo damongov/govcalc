@@ -24,6 +24,7 @@ const IntimacyCalculator = ({ onNavigate }) => {
   const [guaranteedTotal, setGuaranteedTotal] = useState(0);
   const [randomTotalMin, setRandomTotalMin] = useState(0);
   const [randomTotalMax, setRandomTotalMax] = useState(0);
+  const [randomTotalAvg, setRandomTotalAvg] = useState(0);
   const [heraldTotal, setHeraldTotal] = useState(0);
 
   // Save/Load state
@@ -41,7 +42,7 @@ const IntimacyCalculator = ({ onNavigate }) => {
     setGuaranteedTotal(total);
   }, [guaranteedItems]);
 
-  // Calculate random totals (min and max)
+  // Calculate random totals (min, max, and average)
   useEffect(() => {
     const minTotal = (randomItems.intimacyCase * 4) + 
                      (randomItems.intimacyBag * 5) + 
@@ -49,8 +50,10 @@ const IntimacyCalculator = ({ onNavigate }) => {
     const maxTotal = (randomItems.intimacyCase * 50) + 
                      (randomItems.intimacyBag * 8) + 
                      (randomItems.intimacyPurse * 4);
+    const avgTotal = Math.round((minTotal + maxTotal) / 2);
     setRandomTotalMin(minTotal);
     setRandomTotalMax(maxTotal);
+    setRandomTotalAvg(avgTotal);
   }, [randomItems]);
 
   // Calculate herald total
@@ -247,16 +250,16 @@ const IntimacyCalculator = ({ onNavigate }) => {
           )}
 
           <div className="bg-black/40 backdrop-blur-lg rounded-2xl p-4 sm:p-8 border border-red-900/50 shadow-2xl">
-            {/* Total Results Box - Average Highlighted */}
+            {/* Total Results Box - Range Highlighted */}
             <div className="bg-gradient-to-r from-red-900/30 to-black/30 border border-red-700/50 rounded-xl p-6 mb-8 text-center">
               <h2 className="text-lg text-red-200 mb-2">Expected Intimacy</h2>
-              <div className="text-5xl sm:text-6xl font-bold text-red-100 mb-4">
-                {totalAverage.toLocaleString()}
-              </div>
-              <div className="flex items-center justify-center gap-2 text-red-300 text-sm">
-                <span>Range: {totalMin.toLocaleString()}</span>
-                <Gift className="text-red-400" size={16} />
+              <div className="text-4xl sm:text-5xl font-bold text-red-100 mb-4 flex items-center justify-center gap-3">
+                <span>{totalMin.toLocaleString()}</span>
+                <Gift className="text-red-400" size={28} />
                 <span>{totalMax.toLocaleString()}</span>
+              </div>
+              <div className="text-red-300 text-sm">
+                Average: {totalAverage.toLocaleString()} points
               </div>
             </div>
 
@@ -415,8 +418,11 @@ const IntimacyCalculator = ({ onNavigate }) => {
 
                 <div className="bg-gradient-to-r from-red-900/20 to-black/20 rounded-lg p-3 text-center">
                   <div className="text-sm text-red-300">Estimated Total</div>
-                  <div className="text-2xl font-bold text-red-100">
+                  <div className="text-2xl font-bold text-red-100 mb-1">
                     {randomTotalMin.toLocaleString()} - {randomTotalMax.toLocaleString()} points
+                  </div>
+                  <div className="text-xs text-red-400">
+                    Average: {randomTotalAvg.toLocaleString()} points
                   </div>
                 </div>
               </div>
@@ -525,7 +531,7 @@ const IntimacyCalculator = ({ onNavigate }) => {
                 <h3 className="text-red-100 font-semibold mb-2">Summary:</h3>
                 <div className="text-red-200 space-y-1">
                   <p>Guaranteed Intimacy: {guaranteedTotal.toLocaleString()} points</p>
-                  <p>Random Intimacy: {randomTotalMin.toLocaleString()} - {randomTotalMax.toLocaleString()} points</p>
+                  <p>Random Intimacy: {randomTotalMin.toLocaleString()} - {randomTotalMax.toLocaleString()} points (avg: {randomTotalAvg.toLocaleString()})</p>
                   <p>Herald of Fate: {heraldTotal.toLocaleString()} points</p>
                   <p className="font-semibold text-red-100 pt-2">
                     Expected (Average): {totalAverage.toLocaleString()} points
