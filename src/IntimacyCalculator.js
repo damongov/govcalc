@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Gift, Sparkles, Wallet, Coins, Save, Upload, Copy, Check } from 'lucide-react';
+import { Gift, Wallet, Coins, Save, Upload, Copy, Check } from 'lucide-react';
 
 const IntimacyCalculator = ({ onNavigate }) => {
   const [guaranteedItems, setGuaranteedItems] = useState({
