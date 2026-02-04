@@ -380,6 +380,9 @@ const DominanceCalculator = () => {
               multiplier *= (1 + wardenAuras.max_books / 100);
               multiplier *= (1 + wardenAuras.ivan_books / 100);
               break;
+              
+            default:
+              break;
           }
           
           // Apply all-attribute bonuses to all book types including Random (only books)
@@ -572,7 +575,7 @@ const DominanceCalculator = () => {
             </div>
           </div>
 
-          {/* Warden Auras Section - Same as before */}
+          {/* Warden Auras Section */}
           <div className="mb-8">
             <h2 className="text-xl sm:text-2xl font-bold text-red-100 mb-4 text-center">Warden Auras (% Boosts)</h2>
             
