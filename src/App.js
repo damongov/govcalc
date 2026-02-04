@@ -8,9 +8,20 @@ import AttractionCalculator from './AttractionCalculator';
 import IntimacyCalculator from './IntimacyCalculator';
 import BatCalculator from './BatCalculator';
 
-// Bat icon component
+// Custom Bat icon component matching lucide-react style
 const BatIcon = ({ size = 20 }) => (
-  <span style={{ fontSize: size * 0.9, lineHeight: 1 }}>🦇</span>
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M12 8c-1.5-3-4-5-8-5 1 2 1.5 4 1 6-2 0-4 1-4 3 2 0 3.5 1 4 3 1-1 3-2 5-2v5l2 2 2-2v-5c2 0 4 1 5 2 .5-2 2-3 4-3 0-2-2-3-4-3-.5-2 0-4 1-6-4 0-6.5 2-8 5z" />
+  </svg>
 );
 
 const App = () => {
