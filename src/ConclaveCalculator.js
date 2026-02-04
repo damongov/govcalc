@@ -83,14 +83,18 @@ const ConclaveCalculator = ({ onNavigate }) => {
     return h * 60 + m + s / 60;
   };
 
-  // Calculate total points
+// Calculate total points
   useEffect(() => {
     if (!selectedTable || (!hours && !minutes && !seconds)) {
       setTotalPoints(0);
       return;
     }
 
-    const totalMinutes = getTotalMinutes();
+    const h = parseInt(hours) || 0;
+    const m = parseInt(minutes) || 0;
+    const s = parseInt(seconds) || 0;
+    const totalMinutes = h * 60 + m + s / 60;
+    
     const pointsPerMinute = parseInt(selectedTable);
     const basePoints = totalMinutes * pointsPerMinute;
     
