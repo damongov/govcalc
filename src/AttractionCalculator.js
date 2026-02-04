@@ -24,6 +24,7 @@ const AttractionCalculator = ({ onNavigate }) => {
   const [guaranteedTotal, setGuaranteedTotal] = useState(0);
   const [randomTotalMin, setRandomTotalMin] = useState(0);
   const [randomTotalMax, setRandomTotalMax] = useState(0);
+  const [randomTotalAvg, setRandomTotalAvg] = useState(0);
   const [sideGameTotal, setSideGameTotal] = useState(0);
 
   // Save/Load state
@@ -41,7 +42,7 @@ const AttractionCalculator = ({ onNavigate }) => {
     setGuaranteedTotal(total);
   }, [guaranteedItems]);
 
-  // Calculate random totals (min and max)
+  // Calculate random totals (min, max, and average)
   useEffect(() => {
     const minTotal = (randomItems.charmBox * 4) + 
                      (randomItems.charmBottle * 5) + 
@@ -49,8 +50,10 @@ const AttractionCalculator = ({ onNavigate }) => {
     const maxTotal = (randomItems.charmBox * 50) + 
                      (randomItems.charmBottle * 8) + 
                      (randomItems.charmPhial * 4);
+    const avgTotal = Math.round((minTotal + maxTotal) / 2);
     setRandomTotalMin(minTotal);
     setRandomTotalMax(maxTotal);
+    setRandomTotalAvg(avgTotal);
   }, [randomItems]);
 
   // Calculate side game total
@@ -415,8 +418,11 @@ const AttractionCalculator = ({ onNavigate }) => {
 
                 <div className="bg-gradient-to-r from-red-900/20 to-black/20 rounded-lg p-3 text-center">
                   <div className="text-sm text-red-300">Estimated Total</div>
-                  <div className="text-2xl font-bold text-red-100">
+                  <div className="text-2xl font-bold text-red-100 mb-1">
                     {randomTotalMin.toLocaleString()} - {randomTotalMax.toLocaleString()} points
+                  </div>
+                  <div className="text-xs text-red-400">
+                    Average: {randomTotalAvg.toLocaleString()} points
                   </div>
                 </div>
               </div>
@@ -525,7 +531,7 @@ const AttractionCalculator = ({ onNavigate }) => {
                 <h3 className="text-red-100 font-semibold mb-2">Summary:</h3>
                 <div className="text-red-200 space-y-1">
                   <p>Guaranteed Attraction: {guaranteedTotal.toLocaleString()} points</p>
-                  <p>Random Attraction: {randomTotalMin.toLocaleString()} - {randomTotalMax.toLocaleString()} points</p>
+                  <p>Random Attraction: ~{randomTotalAvg.toLocaleString()} points (range: {randomTotalMin.toLocaleString()} - {randomTotalMax.toLocaleString()})</p>
                   <p>Side Game Attraction: {sideGameTotal.toLocaleString()} points</p>
                   <p className="font-semibold text-red-100 pt-2">
                     Expected (Average): {totalAverage.toLocaleString()} points
