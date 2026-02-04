@@ -250,16 +250,16 @@ const AttractionCalculator = ({ onNavigate }) => {
           )}
 
           <div className="bg-black/40 backdrop-blur-lg rounded-2xl p-4 sm:p-8 border border-red-900/50 shadow-2xl">
-            {/* Total Results Box - Average Highlighted */}
+            {/* Total Results Box - Range Highlighted */}
             <div className="bg-gradient-to-r from-red-900/30 to-black/30 border border-red-700/50 rounded-xl p-6 mb-8 text-center">
               <h2 className="text-lg text-red-200 mb-2">Expected Attraction</h2>
-              <div className="text-5xl sm:text-6xl font-bold text-red-100 mb-4">
-                {totalAverage.toLocaleString()}
-              </div>
-              <div className="flex items-center justify-center gap-2 text-red-300 text-sm">
-                <span>Range: {totalMin.toLocaleString()}</span>
-                <Flower className="text-red-400" size={16} />
+              <div className="text-4xl sm:text-5xl font-bold text-red-100 mb-4 flex items-center justify-center gap-3">
+                <span>{totalMin.toLocaleString()}</span>
+                <Flower className="text-red-400" size={28} />
                 <span>{totalMax.toLocaleString()}</span>
+              </div>
+              <div className="text-red-300 text-sm">
+                Average: {totalAverage.toLocaleString()} points
               </div>
             </div>
 
@@ -531,7 +531,7 @@ const AttractionCalculator = ({ onNavigate }) => {
                 <h3 className="text-red-100 font-semibold mb-2">Summary:</h3>
                 <div className="text-red-200 space-y-1">
                   <p>Guaranteed Attraction: {guaranteedTotal.toLocaleString()} points</p>
-                  <p>Random Attraction: ~{randomTotalAvg.toLocaleString()} points (range: {randomTotalMin.toLocaleString()} - {randomTotalMax.toLocaleString()})</p>
+                  <p>Random Attraction: {randomTotalMin.toLocaleString()} - {randomTotalMax.toLocaleString()} points (avg: {randomTotalAvg.toLocaleString()})</p>
                   <p>Side Game Attraction: {sideGameTotal.toLocaleString()} points</p>
                   <p className="font-semibold text-red-100 pt-2">
                     Expected (Average): {totalAverage.toLocaleString()} points
