@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollText, BookOpen, Save, Upload, Copy, Check, Sparkles, Shield, Plus, Trash2 } from 'lucide-react';
 
+// Warden divisors by level (constant, defined outside component)
+const wardenDivisors = {
+  6: 1200,
+  5: 1000,
+  4: 800,
+  3: 600,
+  2: 400,
+  1: 200
+};
+
 const TalentCalculator = () => {
   const [scripts, setScripts] = useState({
     strength: 0,
@@ -42,16 +52,6 @@ const TalentCalculator = () => {
   const [talentScrollsExp, setTalentScrollsExp] = useState({ superior: 0, fine: 0, basic: 0 });
   const [wardensTotal, setWardensTotal] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
-  
-  // Warden divisors by level
-  const wardenDivisors = {
-    6: 1200,
-    5: 1000,
-    4: 800,
-    3: 600,
-    2: 400,
-    1: 200
-  };
 
   // Each level multiplies by its level number
   const getWardenPoints = (warden) => {
