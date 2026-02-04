@@ -20,6 +20,7 @@ const ConclaveCalculator = ({ onNavigate }) => {
     { value: 2100, label: '+2100/min' },
     { value: 3500, label: '+3500/min' },
     { value: 5000, label: '+5000/min' },
+    { value: 6500, label: '+6500/min' },
   ];
 
   const titleOptions = [
@@ -35,7 +36,8 @@ const ConclaveCalculator = ({ onNavigate }) => {
     { value: 2, label: 'Level 2: +2%' },
     { value: 4, label: 'Level 3: +4%' },
     { value: 6, label: 'Level 4: +6%' },
-    { value: 10, label: 'Level 5: +10%' },
+    { value: 8, label: 'Level 5: +8%' },
+    { value: 10, label: 'Level 6: +10%' },
   ];
 
   // Validate and handle time inputs
@@ -186,7 +188,7 @@ const ConclaveCalculator = ({ onNavigate }) => {
               <label className="block text-red-100 text-lg font-semibold mb-3">
                 What kind of table?
               </label>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {tableOptions.map((option) => (
                   <label
                     key={option.value}
