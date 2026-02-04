@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, Flower, Sparkles, Save, Upload, Copy, Check } from 'lucide-react';
+import { Flower, Sparkles, Save, Upload, Copy, Check } from 'lucide-react';
 
 const AttractionCalculator = ({ onNavigate }) => {
   const [guaranteedItems, setGuaranteedItems] = useState({
