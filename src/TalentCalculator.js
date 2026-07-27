@@ -261,7 +261,7 @@ const TalentCalculator = () => {
               <ScrollText className="text-red-400" />
               Talent Calculator
             </h1>
-            <p className="text-red-100 text-sm sm:text-base">Calculate your total talent points from scripts and scrolls</p>
+            <p className="text-red-100 text-sm sm:text-base">Calculate your total talent points from scripts and scrolls. Best used for estimating drops in Cross-Server Talent.</p>
           </div>
 
           {/* Save/Load Button */}
