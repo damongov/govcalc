@@ -2,47 +2,39 @@ import React, { useState, useEffect } from 'react';
 
 export default function BigBatCalculator() {
   const [power, setPower] = useState('');
-  const [damage, setDamage] = useState('');
+  const [hpBefore, setHpBefore] = useState('');
+  const [hpAfter, setHpAfter] = useState('');
   const [results, setResults] = useState({
-    damagePer10M: 0,
-    damagePer1M: 0,
+    perMillion: 0,
     totalHP: 0
   });
 
-  const handlePowerChange = (e) => {
-    const value = e.target.value.replace(/[^\d.]/g, '');
+  const sanitize = (raw) => {
+    const value = raw.replace(/[^\d.]/g, '');
     const parts = value.split('.');
     if (parts.length > 2) {
-      setPower(parts[0] + '.' + parts.slice(1).join(''));
-    } else {
-      setPower(value);
+      return parts[0] + '.' + parts.slice(1).join('');
     }
+    return value;
   };
 
-  const handleDamageChange = (e) => {
-    const value = e.target.value.replace(/[^\d.]/g, '');
-    const parts = value.split('.');
-    if (parts.length > 2) {
-      setDamage(parts[0] + '.' + parts.slice(1).join(''));
-    } else {
-      setDamage(value);
-    }
-  };
+  const powerValue = parseFloat(power) || 0;
+  const beforeValue = parseFloat(hpBefore);
+  const afterValue = parseFloat(hpAfter);
+  const bothHPEntered = !isNaN(beforeValue) && !isNaN(afterValue);
+  const damageValue = bothHPEntered ? beforeValue - afterValue : 0;
+  const invalidHP = bothHPEntered && damageValue <= 0;
 
   useEffect(() => {
-    const powerValue = parseFloat(power) || 0;
-    const damageValue = parseFloat(damage) || 0;
-
     if (powerValue > 0 && damageValue > 0) {
-      const damagePer10M = (damageValue * 10) / powerValue;
-      const damagePer1M = damageValue / powerValue;
-      const totalHP = powerValue / (damageValue / 100);
-
-      setResults({ damagePer10M, damagePer1M, totalHP });
+      setResults({
+        perMillion: damageValue / powerValue,
+        totalHP: powerValue / (damageValue / 100)
+      });
     } else {
-      setResults({ damagePer10M: 0, damagePer1M: 0, totalHP: 0 });
+      setResults({ perMillion: 0, totalHP: 0 });
     }
-  }, [power, damage]);
+  }, [powerValue, damageValue]);
 
   const formatNumber = (num) => {
     if (num >= 1000) {
@@ -51,45 +43,46 @@ export default function BigBatCalculator() {
     return num.toFixed(2) + 'M';
   };
 
+  const increments = [40, 30, 20, 10, 5, 1];
+  const decimalsFor = (step) => (step >= 10 ? 3 : 4);
+
+  const inputClass =
+    'flex-1 bg-black/50 text-red-100 text-xl font-mono px-4 py-3 rounded-lg border border-red-800/50 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/50';
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-red-950 to-black p-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-red-200 mb-2 flex items-center justify-center gap-3">
             <span className="text-4xl">🦇</span>
-            Big Bat HP Calculator
+            Big Bat Damage Calculator
           </h1>
-          <p className="text-red-100 text-sm">Calculate the Big Bat's total HP and damage scaling based on your warden's power</p>
+          <p className="text-red-100 text-sm">See how much damage the Big Bat takes at each power tier, based on your warden</p>
         </div>
 
         <div className="bg-black/40 backdrop-blur-lg rounded-2xl p-6 border border-red-900/50 shadow-2xl">
           {/* Results Box */}
           <div className="bg-gradient-to-r from-red-900/30 to-black/30 border border-red-700/50 rounded-xl p-5 mb-6">
-            <h2 className="text-lg text-red-200 mb-4 text-center">Big Bat Statistics</h2>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-black/30 rounded-lg p-4 text-center border border-red-800/30">
-                <div className="text-red-300 text-sm mb-1">Damage per 10M Power</div>
-                <div className="text-2xl font-bold text-red-100">
-                  {results.damagePer10M > 0 ? results.damagePer10M.toFixed(3) + '%' : '—'}
-                </div>
-              </div>
+            <h2 className="text-lg text-red-200 mb-4 text-center">Damage by power tier</h2>
 
-              <div className="bg-black/30 rounded-lg p-4 text-center border border-red-800/30">
-                <div className="text-red-300 text-sm mb-1">Damage per 1M Power</div>
-                <div className="text-2xl font-bold text-red-100">
-                  {results.damagePer1M > 0 ? results.damagePer1M.toFixed(4) + '%' : '—'}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {increments.map((step) => (
+                <div key={step} className="bg-black/30 rounded-lg p-4 text-center border border-red-800/30">
+                  <div className="text-red-300 text-sm mb-1">Damage per {step}M Power</div>
+                  <div className="text-2xl font-bold text-red-100">
+                    {results.perMillion > 0
+                      ? (results.perMillion * step).toFixed(decimalsFor(step)) + '%'
+                      : '—'}
+                  </div>
                 </div>
-              </div>
-
-              <div className="bg-black/30 rounded-lg p-4 text-center border border-red-800/30">
-                <div className="text-red-300 text-sm mb-1">Bat's Total HP</div>
-                <div className="text-2xl font-bold text-red-100">
-                  {results.totalHP > 0 ? formatNumber(results.totalHP) : '—'}
-                </div>
-                <div className="text-red-400 text-xs mt-1">in power</div>
-              </div>
+              ))}
             </div>
+
+            {results.totalHP > 0 && (
+              <p className="text-red-400 text-xs text-center mt-4">
+                For reference, the Bat's full HP works out to {formatNumber(results.totalHP)} in power.
+              </p>
+            )}
           </div>
 
           {/* Power Input */}
@@ -98,42 +91,73 @@ export default function BigBatCalculator() {
               <span className="text-yellow-400">⚡</span>
               Power of your warden
             </label>
-            
+
             <div className="flex items-center gap-3">
               <input
                 type="text"
                 value={power}
-                onChange={handlePowerChange}
+                onChange={(e) => setPower(sanitize(e.target.value))}
                 placeholder="e.g. 62.85"
-                className="flex-1 bg-black/50 text-red-100 text-xl font-mono px-4 py-3 rounded-lg border border-red-800/50 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/50"
+                className={inputClass}
               />
               <span className="text-red-200 text-lg font-semibold">M</span>
             </div>
             <p className="text-xs text-red-300 mt-2">Enter power in millions (e.g. 62.85 for 62.85M)</p>
           </div>
 
-          {/* Damage Input */}
+          {/* Bat HP Inputs */}
           <div className="mb-5">
             <label className="block text-red-100 text-lg font-semibold mb-2 flex items-center gap-2">
               <span className="text-red-400">🎯</span>
-              % damage dealt to the Big Bat
+              Bat HP before and after the hit
             </label>
-            
-            <div className="flex items-center gap-3">
-              <input
-                type="text"
-                value={damage}
-                onChange={handleDamageChange}
-                placeholder="e.g. 4.79"
-                className="flex-1 bg-black/50 text-red-100 text-xl font-mono px-4 py-3 rounded-lg border border-red-800/50 focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/50"
-              />
-              <span className="text-red-200 text-lg font-semibold">%</span>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <div className="text-red-300 text-sm mb-1">Starting HP</div>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="text"
+                    value={hpBefore}
+                    onChange={(e) => setHpBefore(sanitize(e.target.value))}
+                    placeholder="e.g. 100"
+                    className={inputClass}
+                  />
+                  <span className="text-red-200 text-lg font-semibold">%</span>
+                </div>
+              </div>
+
+              <div>
+                <div className="text-red-300 text-sm mb-1">HP after your warden hit</div>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="text"
+                    value={hpAfter}
+                    onChange={(e) => setHpAfter(sanitize(e.target.value))}
+                    placeholder="e.g. 95.21"
+                    className={inputClass}
+                  />
+                  <span className="text-red-200 text-lg font-semibold">%</span>
+                </div>
+              </div>
             </div>
-            <p className="text-xs text-red-300 mt-2">Enter the percentage of damage your warden dealt</p>
+
+            {invalidHP ? (
+              <p className="text-xs text-yellow-300 mt-2">
+                HP after the hit needs to be lower than the starting HP.
+              </p>
+            ) : (
+              <p className="text-xs text-red-300 mt-2">
+                Total damage dealt ={' '}
+                <span className="text-red-100 font-semibold">
+                  {damageValue > 0 ? damageValue.toFixed(2) + '%' : '—'}
+                </span>
+              </p>
+            )}
           </div>
 
           {/* Calculation Breakdown */}
-          {results.totalHP > 0 && (
+          {results.perMillion > 0 && (
             <div className="bg-black/30 rounded-lg p-4 border border-red-900/30 text-sm">
               <h3 className="text-red-100 font-semibold mb-2 flex items-center gap-2">
                 <span>🧮</span>
@@ -141,11 +165,25 @@ export default function BigBatCalculator() {
               </h3>
               <div className="text-red-200 space-y-1">
                 <p>Your warden's power: {power}M</p>
-                <p>Damage dealt: {damage}%</p>
-                <div className="border-t border-red-800/30 my-2 pt-2">
-                  <p>Damage per 10M = ({damage}% × 10) ÷ {power} = <span className="text-red-100 font-semibold">{results.damagePer10M.toFixed(3)}%</span></p>
-                  <p>Damage per 1M = {damage}% ÷ {power} = <span className="text-red-100 font-semibold">{results.damagePer1M.toFixed(4)}%</span></p>
-                  <p>Total HP = {power}M ÷ ({damage}% ÷ 100) = <span className="text-red-100 font-semibold">{formatNumber(results.totalHP)} power</span></p>
+                <p>
+                  Damage dealt = {hpBefore}% − {hpAfter}% ={' '}
+                  <span className="text-red-100 font-semibold">{damageValue.toFixed(2)}%</span>
+                </p>
+                <div className="border-t border-red-800/30 my-2 pt-2 space-y-1">
+                  <p>
+                    Base rate = {damageValue.toFixed(2)}% ÷ {power} ={' '}
+                    <span className="text-red-100 font-semibold">{results.perMillion.toFixed(4)}%</span> per 1M power
+                  </p>
+                  {increments
+                    .filter((step) => step !== 1)
+                    .map((step) => (
+                      <p key={step}>
+                        Damage per {step}M = {results.perMillion.toFixed(4)}% × {step} ={' '}
+                        <span className="text-red-100 font-semibold">
+                          {(results.perMillion * step).toFixed(decimalsFor(step))}%
+                        </span>
+                      </p>
+                    ))}
                 </div>
               </div>
             </div>
@@ -158,8 +196,8 @@ export default function BigBatCalculator() {
               How it works
             </h3>
             <p className="text-red-200 text-sm">
-              This calculator determines the Big Bat's total HP by using your warden's power and the percentage of damage dealt. 
-              If your warden with X power deals Y% damage, then the Bat's total HP equals X ÷ (Y/100) in power terms.
+              Subtracting the Bat's HP after the hit from its HP before gives the damage your warden dealt. Damage scales
+              linearly with power, so that result becomes a rate per 1M power and gets multiplied up to each tier.
             </p>
           </div>
         </div>
