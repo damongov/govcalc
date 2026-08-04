@@ -255,9 +255,6 @@ const DominanceCalculator = () => {
   const sumAuras = (keys) =>
     keys.reduce((sum, key) => sum + (wardenAuras[key] || 0), 0);
 
-  const multiplyAuras = (keys) =>
-    keys.reduce((product, key) => product * (1 + (wardenAuras[key] || 0) / 100), 1);
-
   const calculateAttributeBoosts = () => {
     const allBonus = sumAuras(ALL_ATTRIBUTE_BOOK_AURAS);
 
